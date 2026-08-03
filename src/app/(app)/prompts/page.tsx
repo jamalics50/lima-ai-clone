@@ -19,7 +19,12 @@ export default async function PromptsPage() {
 
   const workspaceId = workspaceMembers?.[0]?.workspace_id;
 
-  let prompts: any[] = [];
+  interface Prompt {
+    id: string;
+    text: string;
+    created_at: string;
+  }
+  let prompts: Prompt[] = [];
   if (workspaceId) {
     const { data } = await supabase
       .from('prompts')

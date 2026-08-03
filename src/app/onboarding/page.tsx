@@ -89,7 +89,7 @@ export default function OnboardingPage() {
         <div className="space-y-6 animate-card-mount opacity-0" style={{ animationFillMode: 'forwards' }}>
           <div>
             <h2 className="text-xl font-serif text-[#F5F1EA] mb-2">Tell us about your brand</h2>
-            <p className="text-sm font-sans text-[#9C978C]">Let's set up your primary tracking subject.</p>
+            <p className="text-sm font-sans text-[#9C978C]">Let&apos;s set up your primary tracking subject.</p>
           </div>
           
           <div className="space-y-4">
@@ -201,7 +201,7 @@ export default function OnboardingPage() {
         <div className="space-y-6 animate-card-mount opacity-0" style={{ animationFillMode: 'forwards' }}>
           <div>
             <h2 className="text-xl font-serif text-[#F5F1EA] mb-2">Select Prompts to Track</h2>
-            <p className="text-sm font-sans text-[#9C978C]">We've generated some template prompts based on your category. Select the ones you want to run.</p>
+            <p className="text-sm font-sans text-[#9C978C]">We&apos;ve generated some template prompts based on your category. Select the ones you want to run.</p>
           </div>
 
           <div className="space-y-3">

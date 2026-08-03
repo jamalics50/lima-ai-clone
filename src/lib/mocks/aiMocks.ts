@@ -56,7 +56,7 @@ function generateRandomMentions(context: MockRunContext): MentionResult[] {
   return mentions;
 }
 
-function generateRandomCitations(context: MockRunContext): CitationResult[] {
+function generateRandomCitations(): CitationResult[] {
   const sources = [
     { url: 'https://reddit.com/r/software', title: 'Discussion on best tools' },
     { url: 'https://g2.com/reviews', title: 'Top 10 solutions in 2024' },
@@ -104,7 +104,7 @@ export async function mockRunOnOpenAI(context: MockRunContext): Promise<MockResu
   const mentions = generateRandomMentions(context);
   return {
     text: getBaseResponse('ChatGPT (GPT-4o)', context, mentions),
-    citations: generateRandomCitations(context),
+    citations: generateRandomCitations(),
     mentions
   };
 }
@@ -114,7 +114,7 @@ export async function mockRunOnClaude(context: MockRunContext): Promise<MockResu
   const mentions = generateRandomMentions(context);
   return {
     text: getBaseResponse('Claude 3.5 Sonnet', context, mentions),
-    citations: generateRandomCitations(context),
+    citations: generateRandomCitations(),
     mentions
   };
 }
@@ -124,7 +124,7 @@ export async function mockRunOnPerplexity(context: MockRunContext): Promise<Mock
   const mentions = generateRandomMentions(context);
   return {
     text: getBaseResponse('Perplexity Pro', context, mentions),
-    citations: generateRandomCitations(context),
+    citations: generateRandomCitations(),
     mentions
   };
 }
@@ -134,7 +134,7 @@ export async function mockRunOnGrok(context: MockRunContext): Promise<MockResult
   const mentions = generateRandomMentions(context);
   return {
     text: getBaseResponse('Grok 2.0', context, mentions),
-    citations: generateRandomCitations(context),
+    citations: generateRandomCitations(),
     mentions
   };
 }
@@ -144,7 +144,7 @@ export async function mockRunOnGoogleAIO(context: MockRunContext): Promise<MockR
   const mentions = generateRandomMentions(context);
   return {
     text: getBaseResponse('Google AI Overviews', context, mentions),
-    citations: generateRandomCitations(context),
+    citations: generateRandomCitations(),
     mentions
   };
 }

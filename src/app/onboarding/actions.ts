@@ -31,7 +31,7 @@ export async function completeOnboarding(formData: {
   }
 
   // 1. Insert Brand
-  const { data: brandData, error: brandError } = await supabase
+  const { error: brandError } = await supabase
     .from('brands')
     .insert({
       workspace_id: workspaceId,
