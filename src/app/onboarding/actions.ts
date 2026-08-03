@@ -24,10 +24,24 @@ export async function completeOnboarding(formData: {
     .eq('user_id', user.id)
     .limit(1);
 
-  const workspaceId = workspaceMembers?.[0]?.workspace_id;
+  let workspaceId = workspaceMembers?.[0]?.workspace_id;
 
   if (!workspaceId) {
-    throw new Error('No workspace found');
+    // Fallback: create a workspace if the database trigger didn't catch this user
+    const { data: newWs, error: wsError } = await supabase
+      .from('workspaces')
+      .insert({ name: user.email || 'My Workspace' })
+      .select('id')
+      .single();
+
+    if (wsError) throw wsError;
+    workspaceId = newWs.id;
+
+    const { error: wmError } = await supabase
+      .from('workspace_members')
+      .insert({ workspace_id: workspaceId, user_id: user.id, role: 'owner' });
+
+    if (wmError) throw wmError;
   }
 
   // 1. Insert Brand
