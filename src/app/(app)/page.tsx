@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { CircularGauge } from '@/components/ui/CircularGauge';
 import { PercentileBar } from '@/components/ui/PercentileBar';
 import { Sparkline } from '@/components/ui/Sparkline';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 const competitorsData = [
@@ -47,10 +48,10 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* 1. HERO ROW: 2-column grid (2fr / 1fr) */}
+      {/* 1. HERO ROW: 2-column grid (2fr / 1fr) with staggered mount delays */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Cell (2fr): Featured Card with 150px Coral Gauge & Sparkline */}
-        <Card className="lg:col-span-2 flex flex-col justify-between p-6">
+        {/* Left Cell (2fr): Featured Card */}
+        <Card delay={0.05} className="lg:col-span-2 flex flex-col justify-between p-6">
           <div className="flex items-center justify-between">
             <div>
               <span className="text-xs font-sans uppercase tracking-widest text-[#9C978C]">Primary Metric</span>
@@ -62,13 +63,13 @@ export default function Dashboard() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-around my-6 gap-6">
-            {/* 150px Coral Gauge */}
-            <CircularGauge percentage={84} variant="coral" size={150} strokeWidth={8} />
+            {/* 150px Coral Gauge with 0.1s delay */}
+            <CircularGauge percentage={84} variant="coral" size={150} strokeWidth={8} delay={0.1} />
 
-            {/* Sparkline Trend Line */}
+            {/* Sparkline Trend Line with 0.2s delay */}
             <div className="flex flex-col items-center sm:items-start space-y-2">
               <span className="text-xs font-sans text-[#9C978C]">30-Day Trend</span>
-              <Sparkline data={[62, 68, 65, 74, 78, 80, 84]} color="#D9714A" width={140} height={48} />
+              <Sparkline data={[62, 68, 65, 74, 78, 80, 84]} color="#D9714A" width={140} height={48} delay={0.2} />
               <span className="text-xs font-sans text-[#D9714A] font-semibold">+12% increase</span>
             </div>
           </div>
@@ -81,27 +82,31 @@ export default function Dashboard() {
 
         {/* Right Cell (1fr): Vertical Stack of 2 Smaller Cards */}
         <div className="flex flex-col gap-6">
-          {/* Card A: Compact Market Share Tile (56px Sky Blue Gauge inline with label) */}
-          <Card className="flex-1 p-5 flex items-center justify-between">
+          {/* Card A: Compact Market Share Tile */}
+          <Card delay={0.15} className="flex-1 p-5 flex items-center justify-between">
             <div>
               <span className="text-xs font-sans text-[#9C978C]">Market Share</span>
-              <div className="text-2xl font-sans font-semibold text-[#F5F1EA] mt-1">32%</div>
+              <div className="text-2xl font-sans font-semibold text-[#F5F1EA] mt-1">
+                <AnimatedNumber value={32} suffix="%" delay={150} />
+              </div>
               <span className="text-xs font-sans text-[#9C978C]">Industry Rank #2</span>
             </div>
-            <CircularGauge percentage={32} variant="sky-blue" size={56} strokeWidth={5} />
+            <CircularGauge percentage={32} variant="sky-blue" size={56} strokeWidth={5} delay={0.25} />
           </Card>
 
-          {/* Card B: Plain Number Stat Card (Total Mentions, no gauge) */}
-          <Card className="flex-1 p-5 flex flex-col justify-center">
+          {/* Card B: Plain Number Stat Card (Total Mentions with AnimatedNumber) */}
+          <Card delay={0.2} className="flex-1 p-5 flex flex-col justify-center">
             <span className="text-xs font-sans text-[#9C978C]">Total Mentions</span>
-            <div className="text-3xl font-sans font-bold text-[#F5F1EA] mt-1">1,234</div>
+            <div className="text-3xl font-sans font-bold text-[#F5F1EA] mt-1">
+              <AnimatedNumber value={1234} delay={200} />
+            </div>
             <span className="text-xs font-sans text-[#3FA9E0] mt-1 font-medium">+20.1% from last month</span>
           </Card>
         </div>
       </div>
 
-      {/* 2. FULL-WIDTH COMPETITIVE ANALYSIS CARD: 3-column percentile bars side by side */}
-      <Card className="p-6">
+      {/* 2. FULL-WIDTH COMPETITIVE ANALYSIS CARD */}
+      <Card delay={0.25} className="p-6">
         <CardHeader className="p-0 mb-6">
           <CardTitle className="text-xl">Competitive Benchmark Analysis</CardTitle>
           <CardDescription className="text-sm">
@@ -113,7 +118,9 @@ export default function Dashboard() {
             <div className="bg-white/2 p-4 rounded-xl border border-white/5">
               <div className="flex justify-between mb-1">
                 <span className="text-xs font-sans font-medium text-[#F5F1EA]">Customer Engagement</span>
-                <span className="text-xs font-sans font-bold text-[#D9714A]">78 / 100</span>
+                <span className="text-xs font-sans font-bold text-[#D9714A]">
+                  <AnimatedNumber value={78} suffix=" / 100" delay={250} />
+                </span>
               </div>
               <PercentileBar score={78} average={45} />
             </div>
@@ -121,7 +128,9 @@ export default function Dashboard() {
             <div className="bg-white/2 p-4 rounded-xl border border-white/5">
               <div className="flex justify-between mb-1">
                 <span className="text-xs font-sans font-medium text-[#F5F1EA]">Prompt Effectiveness</span>
-                <span className="text-xs font-sans font-bold text-[#D9714A]">92 / 100</span>
+                <span className="text-xs font-sans font-bold text-[#D9714A]">
+                  <AnimatedNumber value={92} suffix=" / 100" delay={300} />
+                </span>
               </div>
               <PercentileBar score={92} average={60} />
             </div>
@@ -129,7 +138,9 @@ export default function Dashboard() {
             <div className="bg-white/2 p-4 rounded-xl border border-white/5">
               <div className="flex justify-between mb-1">
                 <span className="text-xs font-sans font-medium text-[#F5F1EA]">Response Quality</span>
-                <span className="text-xs font-sans font-bold text-[#D9714A]">85 / 100</span>
+                <span className="text-xs font-sans font-bold text-[#D9714A]">
+                  <AnimatedNumber value={85} suffix=" / 100" delay={350} />
+                </span>
               </div>
               <PercentileBar score={85} average={52} />
             </div>
@@ -147,26 +158,26 @@ export default function Dashboard() {
           {competitorsData.map((item, idx) => (
             <div 
               key={idx} 
-              className="min-w-[150px] bg-[#1C1917] border border-white/8 rounded-full py-2.5 px-4 flex items-center gap-3 shrink-0"
+              className="min-w-[150px] bg-[#1C1917] border border-white/8 hover:border-white/20 transition-all duration-150 rounded-full py-2.5 px-4 flex items-center gap-3 shrink-0"
             >
-              {/* Avatar circle in Sky Blue (Competitors are never Coral) */}
               <div className="h-7 w-7 rounded-full bg-[#3FA9E0]/20 text-[#3FA9E0] flex items-center justify-center text-xs font-sans font-bold border border-[#3FA9E0]/30">
                 {item.initial}
               </div>
               <div className="flex flex-col">
                 <span className="text-xs font-sans font-medium text-[#F5F1EA] truncate max-w-[70px]">{item.name}</span>
-                {/* Score in Sky Blue */}
-                <span className="text-[11px] font-sans font-bold text-[#3FA9E0]">{item.score}% score</span>
+                <span className="text-[11px] font-sans font-bold text-[#3FA9E0]">
+                  <AnimatedNumber value={item.score} suffix="% score" delay={400 + idx * 50} />
+                </span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 4. BOTTOM ROW: Asymmetric 2-column grid (1.4fr / 1fr) */}
+      {/* 4. BOTTOM ROW: Asymmetric 2-column grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left (1.4fr ~ 7 cols): Recent Activity Timeline */}
-        <Card className="lg:col-span-7 flex flex-col justify-between">
+        {/* Left: Recent Activity Timeline */}
+        <Card delay={0.3} className="lg:col-span-7 flex flex-col justify-between">
           <CardHeader>
             <CardTitle className="text-xl">Recent Activity</CardTitle>
             <CardDescription className="text-sm">
@@ -191,8 +202,8 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Right (1fr ~ 5 cols): Actions Panel with 3 Tiers */}
-        <Card className="lg:col-span-5">
+        {/* Right: Actions Panel */}
+        <Card delay={0.35} className="lg:col-span-5">
           <CardHeader>
             <CardTitle className="text-xl">Actions</CardTitle>
             <CardDescription className="text-sm">
@@ -200,15 +211,12 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Primary Action - Solid Coral */}
             <Button className="w-full justify-center" variant="primary">
               Generate Audit Report
             </Button>
-            {/* Secondary Action - Sky Blue Outline */}
             <Button className="w-full justify-center" variant="secondary">
               Review New Mentions
             </Button>
-            {/* Tertiary Action - Neutral White 16% Outline */}
             <Button className="w-full justify-center" variant="tertiary">
               Manage Competitors
             </Button>

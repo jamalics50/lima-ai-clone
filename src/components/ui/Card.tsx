@@ -1,9 +1,19 @@
 import React from 'react';
 
-export function Card({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  delay?: number; // Delay in seconds for mount stagger (e.g. 0.1, 0.2)
+}
+
+export function Card({ className = '', delay = 0, style, ...props }: CardProps) {
+  const mountStyle: React.CSSProperties = {
+    ...style,
+    animationDelay: `${delay}s`,
+  };
+
   return (
     <div 
-      className={`rounded-2xl border border-white/8 bg-[#1C1917] text-[#F5F1EA] shadow-none ${className}`} 
+      className={`rounded-2xl border border-white/8 bg-[#1C1917] text-[#F5F1EA] shadow-none animate-card-mount hover:-translate-y-[3px] hover:border-white/20 transition-all duration-[180ms] ${className}`} 
+      style={mountStyle}
       {...props} 
     />
   );
