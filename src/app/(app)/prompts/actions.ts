@@ -4,7 +4,14 @@ import { createClient } from '@/utils/supabase/server';
 import { mockRunOnOpenAI, mockRunOnClaude, mockRunOnPerplexity, mockRunOnGrok, mockRunOnGoogleAIO, MockRunContext } from '@/lib/mocks/aiMocks';
 import { revalidatePath } from 'next/cache';
 
-export async function runPrompt(promptId: string) {
+export interface RunSummary {
+  platform: string;
+  sentiment: string;
+  brandMentioned: boolean;
+  citationCount: number;
+}
+
+export async function runPrompt(promptId: string): Promise<RunSummary[]> {
   const supabase = await createClient();
 
   // 1. Fetch prompt
@@ -37,7 +44,7 @@ export async function runPrompt(promptId: string) {
     competitors: (competitors || []).map(c => ({ id: c.id, name: c.name, url: c.website_url }))
   };
 
-  // 3. Execute mocks concurrently
+  // 3. Execute all 5 mocks concurrently — same shape as real pipeline
   const mocks = [
     mockRunOnOpenAI,
     mockRunOnClaude,
@@ -49,7 +56,9 @@ export async function runPrompt(promptId: string) {
   const results = await Promise.all(mocks.map(mock => mock(context)));
   const platforms = ['ChatGPT (GPT-4o)', 'Claude 3.5 Sonnet', 'Perplexity Pro', 'Grok 2.0', 'Google AI Overviews'];
 
-  // 4. Save results to DB
+  const summaries: RunSummary[] = [];
+
+  // 4. Save results to DB and build summary for UI
   for (let i = 0; i < results.length; i++) {
     const result = results[i];
     const platformName = platforms[i];
@@ -64,7 +73,7 @@ export async function runPrompt(promptId: string) {
       })
       .select('id')
       .single();
-    
+
     if (runError) throw runError;
     const runId = run.id;
 
@@ -90,7 +99,17 @@ export async function runPrompt(promptId: string) {
         }))
       );
     }
+
+    // Build UI summary from the mock result
+    const brandMention = result.mentions.find(m => m.brandId);
+    summaries.push({
+      platform: platformName,
+      sentiment: brandMention?.sentiment ?? 'neutral',
+      brandMentioned: !!brandMention,
+      citationCount: result.citations.length,
+    });
   }
 
   revalidatePath('/prompts');
+  return summaries;
 }
