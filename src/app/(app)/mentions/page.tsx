@@ -1,147 +1,162 @@
-import { Card } from '@/components/ui/Card';
+import { createClient } from '@/utils/supabase/server';
 import { Button } from '@/components/ui/Button';
-import { Search, Filter, MessageSquare, ExternalLink, ThumbsUp, ArrowUpRight, TrendingUp, Radio } from 'lucide-react';
+import { MentionsTable, MentionRow } from './MentionsTable';
+import { Layers } from 'lucide-react';
 
-const mentionsList = [
-  {
-    id: 1,
-    source: 'TechCrunch AI Index',
-    snippet: 'LIMA AI has emerged as a top contender in brand monitoring automation, outperforming legacy benchmarks.',
-    date: '2 hours ago',
-    sentiment: 'Positive',
-    platform: 'Article',
-    score: '94% Match',
-  },
-  {
-    id: 2,
-    source: 'Hacker News Thread',
-    snippet: 'Does anyone have experience using LIMA AI for automated competitive sentiment analysis vs. traditional APIs?',
-    date: '5 hours ago',
-    sentiment: 'Neutral',
-    platform: 'Forum',
-    score: '88% Match',
-  },
-  {
-    id: 3,
-    source: 'X / Twitter (@tech_guru)',
-    snippet: 'Impressed by the real-time prompt tracking in LIMA AI. Huge time saver for marketing teams.',
-    date: '1 day ago',
-    sentiment: 'Positive',
-    platform: 'Social',
-    score: '91% Match',
-  },
+const PAGE_SIZE = 20;
+const ALL_PLATFORMS = [
+  'ChatGPT (GPT-4o)',
+  'Claude 3.5 Sonnet',
+  'Perplexity Pro',
+  'Grok 2.0',
+  'Google AI Overviews',
 ];
 
-const sentimentColor = (s: string) => s === 'Positive' ? 'text-[#D9714A]' : 'text-[#9C978C]';
+interface PageProps {
+  searchParams: {
+    platform?: string;
+    sentiment?: string;
+    type?: string;
+    page?: string;
+  };
+}
 
-export default function MentionsPage() {
+export default async function MentionsPage({ searchParams }: PageProps) {
+  const platform = searchParams.platform ?? 'all';
+  const sentiment = searchParams.sentiment ?? 'all';
+  const type = searchParams.type ?? 'all';
+  const page = Math.max(1, parseInt(searchParams.page ?? '1'));
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  // Get workspace + prompts (to scope queries through RLS)
+  const { data: wm } = await supabase
+    .from('workspace_members')
+    .select('workspace_id')
+    .eq('user_id', user.id)
+    .limit(1)
+    .single();
+
+  const workspaceId = wm?.workspace_id as string | undefined;
+
+  const { data: brand } = workspaceId
+    ? await supabase.from('brands').select('id, name').eq('workspace_id', workspaceId).limit(1).single()
+    : { data: null };
+
+  const { data: competitors } = workspaceId
+    ? await supabase.from('competitors').select('id, name').eq('workspace_id', workspaceId)
+    : { data: [] };
+
+  const { data: prompts } = workspaceId
+    ? await supabase.from('prompts').select('id').eq('workspace_id', workspaceId)
+    : { data: [] };
+
+  const promptIds = (prompts ?? []).map((p: { id: string }) => p.id);
+
+  // Fetch runs with mentions and citations
+  type RawRun = {
+    id: string;
+    created_at: string;
+    platform_name: string;
+    response_text: string;
+    mentions: { id: string; mentioned_brand_id: string | null; mentioned_competitor_id: string | null; sentiment: string }[];
+    citations: { url: string; title: string }[];
+  };
+
+  let runs: RawRun[] = [];
+  if (promptIds.length > 0) {
+    const { data } = await supabase
+      .from('platform_runs')
+      .select('id, created_at, platform_name, response_text, mentions(*), citations(url, title)')
+      .in('prompt_id', promptIds)
+      .order('created_at', { ascending: false })
+      .limit(1000);
+    runs = (data as RawRun[]) ?? [];
+  }
+
+  // Flatten to mention rows
+  const brandId = brand?.id;
+  const compNameMap = Object.fromEntries((competitors ?? []).map((c: { id: string; name: string }) => [c.id, c.name]));
+
+  const allRows: MentionRow[] = runs.flatMap(run =>
+    run.mentions.map(m => ({
+      id: m.id,
+      createdAt: run.created_at,
+      platform: run.platform_name,
+      isBrand: m.mentioned_brand_id === brandId,
+      entityName: m.mentioned_brand_id === brandId
+        ? (brand?.name ?? 'Your Brand')
+        : compNameMap[m.mentioned_competitor_id ?? ''] ?? 'Competitor',
+      sentiment: m.sentiment,
+      snippet: run.response_text?.slice(0, 160) ?? '',
+      citations: run.citations,
+    }))
+  );
+
+  // Apply filters
+  let filtered = allRows;
+  if (platform !== 'all') filtered = filtered.filter(r => r.platform === platform);
+  if (sentiment !== 'all') filtered = filtered.filter(r => r.sentiment === sentiment);
+  if (type === 'brand') filtered = filtered.filter(r => r.isBrand);
+  if (type === 'competitor') filtered = filtered.filter(r => !r.isBrand);
+
+  const total = filtered.length;
+  const paginatedRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const hasAnyData = allRows.length > 0;
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto py-2">
-
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-serif font-medium tracking-tight text-[#F5F1EA]">Mentions &amp; Coverage</h2>
           <p className="text-[#9C978C] text-sm font-sans">
-            Real-time feed of web citations, social posts, and industry news mentioning your brand.
+            {hasAnyData
+              ? `${allRows.length} mention${allRows.length !== 1 ? 's' : ''} tracked across ${new Set(runs.map(r => r.platform_name)).size} AI platforms`
+              : 'Run your prompts to start capturing brand mentions across AI platforms.'}
           </p>
         </div>
-        {/* One primary button per page */}
-        <Button variant="primary">Export Mentions Report</Button>
+        {/* One primary button per page — coral */}
+        <Button variant="primary">Export CSV</Button>
       </div>
 
-      {/* HERO: Featured Mention — full-width, sky blue accent border (informational) */}
-      <Card className="p-6 border-[#3FA9E0]/30 bg-gradient-to-r from-[#1C1917] via-[#1C1917] to-[#3FA9E0]/8">
-        <div className="flex items-center gap-2 text-xs font-sans text-[#3FA9E0] uppercase tracking-wider font-semibold mb-3">
-          <Radio className="h-3.5 w-3.5" /> Top Trending Mention
-        </div>
-        <h3 className="text-xl font-serif font-medium text-[#F5F1EA] mb-2">
-          &ldquo;LIMA AI sets the benchmark for enterprise prompt monitoring in 2026.&rdquo;
-        </h3>
-        <p className="text-sm font-sans text-[#9C978C] mb-4 max-w-3xl">
-          Published by TechCrunch &bull; Reached 45,000+ industry professionals with 96% positive sentiment rating.
-        </p>
-        <div className="flex items-center gap-5 text-xs font-sans">
-          <span className="flex items-center gap-1.5 text-[#F5F1EA]">
-            <ThumbsUp className="h-3.5 w-3.5 text-[#3FA9E0]" /> 1,240 Engagements
-          </span>
-          <span className="flex items-center gap-1.5 text-[#F5F1EA]">
-            <TrendingUp className="h-3.5 w-3.5 text-[#D9714A]" /> Coral = brand signal
-          </span>
-          <span className="text-[#3FA9E0] underline flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity">
-            Read Full Article <ExternalLink className="h-3 w-3" />
-          </span>
-        </div>
-      </Card>
-
-      {/* KPI STAT STRIP — horizontal, breaks the card-grid rhythm */}
-      <div className="grid grid-cols-3 divide-x divide-white/8 border border-white/8 rounded-2xl overflow-hidden bg-[#1C1917]">
-        <div className="p-5">
-          <span className="text-xs font-sans text-[#9C978C]">Total Mentions</span>
-          <div className="text-2xl font-sans font-bold text-[#F5F1EA] mt-1">1,234</div>
-          <span className="text-xs font-sans text-[#3FA9E0]">+20.1% this month</span>
-        </div>
-        <div className="p-5">
-          <span className="text-xs font-sans text-[#9C978C]">Positive Sentiment</span>
-          <div className="text-2xl font-sans font-bold text-[#D9714A] mt-1">76%</div>
-          <span className="text-xs font-sans text-[#9C978C]">Industry avg: 58%</span>
-        </div>
-        <div className="p-5">
-          <span className="text-xs font-sans text-[#9C978C]">Avg. Match Score</span>
-          <div className="text-2xl font-sans font-bold text-[#F5F1EA] mt-1">91%</div>
-          <span className="text-xs font-sans text-[#9C978C]">Across all sources</span>
-        </div>
-      </div>
-
-      {/* FILTER BAR */}
-      <div className="flex flex-col sm:flex-row items-center gap-3">
-        <div className="relative flex-1 w-full">
-          <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#9C978C]" />
-          <input
-            type="text"
-            placeholder="Search mentions by keyword, domain, or source..."
-            className="w-full bg-[#1C1917] border border-white/8 rounded-full pl-10 pr-4 py-2 text-sm text-[#F5F1EA] placeholder-[#9C978C] focus:outline-none focus:border-[#3FA9E0]/50 transition-colors"
-          />
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <Button variant="secondary" size="sm" className="flex items-center gap-1.5">
-            <Filter className="h-3.5 w-3.5" /> Filter
-          </Button>
-          <Button variant="tertiary" size="sm">Positive Only</Button>
-          <Button variant="tertiary" size="sm">Last 7 Days</Button>
-        </div>
-      </div>
-
-      {/* TIMELINE FEED — table-like rows, different rhythm from overview grid */}
-      <div className="border border-white/8 rounded-2xl overflow-hidden bg-[#1C1917] divide-y divide-white/8">
-        {mentionsList.map((item) => (
-          <div key={item.id} className="flex items-start gap-4 p-5 hover:bg-white/2 transition-colors group">
-            {/* Icon avatar — sky blue, informational */}
-            <div className="h-9 w-9 rounded-full bg-[#3FA9E0]/15 text-[#3FA9E0] flex items-center justify-center border border-[#3FA9E0]/25 shrink-0 mt-0.5">
-              <MessageSquare className="h-4 w-4" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                <h4 className="text-base font-serif font-medium text-[#F5F1EA]">{item.source}</h4>
-                <div className="flex items-center gap-2 shrink-0">
-                  {/* Coral for positive sentiment = brand signal / "you" context */}
-                  <span className={`text-xs font-sans font-bold ${sentimentColor(item.sentiment)}`}>{item.sentiment}</span>
-                  <span className="text-xs font-sans font-bold text-[#3FA9E0]">{item.score}</span>
-                  <span className="text-xs font-sans text-[#9C978C]">{item.date}</span>
-                </div>
-              </div>
-              <p className="text-sm font-sans text-[#9C978C] leading-relaxed">{item.snippet}</p>
-              <div className="flex items-center gap-3 mt-2">
-                <span className="text-xs font-sans text-[#9C978C] bg-white/5 px-2 py-0.5 rounded-full border border-white/8">{item.platform}</span>
-                <span className="text-xs font-sans text-[#3FA9E0] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  View source <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </div>
-            </div>
+      {!hasAnyData ? (
+        /* Full-page empty state — sky blue accent border */
+        <div className="border border-[#3FA9E0]/30 border-dashed rounded-2xl py-20 flex flex-col items-center gap-4 text-center">
+          <div className="h-14 w-14 rounded-full border border-[#3FA9E0]/40 bg-[#3FA9E0]/10 flex items-center justify-center">
+            <Layers className="h-7 w-7 text-[#3FA9E0]" />
           </div>
-        ))}
-      </div>
-
+          <div>
+            <p className="text-lg font-serif font-medium text-[#F5F1EA]">No mentions yet</p>
+            <p className="text-sm font-sans text-[#9C978C] mt-1 max-w-xs mx-auto">
+              Head to Prompts and click &ldquo;Run Now&rdquo;, or visit the Seed page to populate demo data instantly.
+            </p>
+          </div>
+          <div className="flex gap-3 mt-2">
+            <Button variant="primary" size="sm">
+              <a href="/prompts">Go to Prompts</a>
+            </Button>
+            <Button variant="secondary" size="sm">
+              <a href="/seed">Seed Demo Data</a>
+            </Button>
+          </div>
+        </div>
+      ) : (
+        /* Real filterable, paginated table */
+        <MentionsTable
+          rows={paginatedRows}
+          total={total}
+          page={page}
+          pageSize={PAGE_SIZE}
+          platform={platform}
+          sentiment={sentiment}
+          type={type}
+          platforms={ALL_PLATFORMS}
+        />
+      )}
     </div>
   );
 }
