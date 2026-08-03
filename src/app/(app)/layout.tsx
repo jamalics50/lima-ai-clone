@@ -24,13 +24,29 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // Fetch the first workspace for this user
   const { data: workspaceMembers } = await supabase
     .from('workspace_members')
-    .select('workspaces(name)')
+    .select('workspace_id, workspaces(name)')
     .eq('user_id', user.id)
     .limit(1);
 
-  const rawWorkspaces = workspaceMembers?.[0]?.workspaces as unknown;
+  if (!workspaceMembers || workspaceMembers.length === 0) {
+    redirect('/login');
+  }
+
+  const workspaceId = workspaceMembers[0].workspace_id;
+  const rawWorkspaces = workspaceMembers[0].workspaces as unknown;
   const workspaceObj = Array.isArray(rawWorkspaces) ? rawWorkspaces[0] : rawWorkspaces;
   const workspaceName = (workspaceObj as { name?: string })?.name || 'My Workspace';
+
+  // Check if they have completed onboarding (have at least one brand)
+  const { count } = await supabase
+    .from('brands')
+    .select('*', { count: 'exact', head: true })
+    .eq('workspace_id', workspaceId);
+
+  if (count === 0) {
+    redirect('/onboarding');
+  }
+
   const initial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
 
   return (

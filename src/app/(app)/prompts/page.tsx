@@ -1,8 +1,35 @@
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { BookOpen, Plus } from 'lucide-react';
+import { createClient } from '@/utils/supabase/server';
+import { PromptRow } from './PromptRow';
 
-export default function PromptsPage() {
+export default async function PromptsPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  // Fetch workspace
+  const { data: workspaceMembers } = await supabase
+    .from('workspace_members')
+    .select('workspace_id')
+    .eq('user_id', user.id)
+    .limit(1);
+
+  const workspaceId = workspaceMembers?.[0]?.workspace_id;
+
+  let prompts: any[] = [];
+  if (workspaceId) {
+    const { data } = await supabase
+      .from('prompts')
+      .select('*')
+      .eq('workspace_id', workspaceId)
+      .order('created_at', { ascending: false });
+    
+    prompts = data || [];
+  }
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto py-2">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -17,12 +44,23 @@ export default function PromptsPage() {
         </Button>
       </div>
 
-      <Card className="p-8 text-center flex flex-col items-center justify-center min-h-[300px]">
-        <BookOpen className="h-12 w-12 text-[#3FA9E0] mb-4 stroke-[1.5]" />
-        <h3 className="text-xl font-serif font-medium text-[#F5F1EA] mb-2">Saved Prompt Workflows</h3>
-        <p className="text-sm font-sans text-[#9C978C] max-w-md">
-          Create custom prompts to analyze competitive responses and benchmark brand visibility.
-        </p>
+      <Card className="p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <BookOpen className="h-5 w-5 text-[#3FA9E0]" />
+          <h3 className="text-lg font-serif font-medium text-[#F5F1EA]">Saved Prompt Workflows</h3>
+        </div>
+
+        {prompts.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-sm font-sans text-[#9C978C]">No prompts found. Add one to start tracking.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {prompts.map(prompt => (
+              <PromptRow key={prompt.id} prompt={prompt} />
+            ))}
+          </div>
+        )}
       </Card>
     </div>
   );
