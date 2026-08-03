@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Newsreader } from "next/font/google";
+import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const newsreader = Newsreader({ 
+const fraunces = Fraunces({ 
   subsets: ["latin"], 
-  variable: "--font-newsreader",
+  weight: ["500"],
+  variable: "--font-fraunces",
   adjustFontFallback: false 
 });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${newsreader.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${fraunces.variable} font-sans antialiased bg-[#141210] text-[#F5F1EA]`}>
         {children}
       </body>
     </html>

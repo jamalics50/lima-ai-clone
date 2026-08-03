@@ -9,18 +9,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        card: "var(--card)",
-        "card-foreground": "var(--card-foreground)",
-        border: "var(--border)",
-        accent: {
-          DEFAULT: "#C05E44", // Terracotta
-          foreground: "#FFFFFF",
+        background: "#141210",
+        foreground: "#F5F1EA",
+        card: {
+          DEFAULT: "#1C1917",
+          foreground: "#F5F1EA",
+        },
+        border: "rgba(255, 255, 255, 0.08)",
+        coral: {
+          DEFAULT: "#D9714A",
+          text: "#4A1B0C",
+        },
+        sky: {
+          DEFAULT: "#3FA9E0",
         },
         muted: {
-          DEFAULT: "var(--muted)",
-          foreground: "var(--muted-foreground)",
+          DEFAULT: "rgba(255, 255, 255, 0.05)",
+          foreground: "#9C978C",
         }
       },
       borderRadius: {
@@ -31,8 +36,8 @@ const config: Config = {
         full: "9999px",
       },
       fontFamily: {
-        sans: ["var(--font-inter)"],
-        serif: ["var(--font-newsreader)"],
+        sans: ["var(--font-inter)", "sans-serif"],
+        serif: ["var(--font-fraunces)", "serif"],
       },
       boxShadow: {
         sm: "none",
