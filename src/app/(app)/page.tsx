@@ -4,7 +4,7 @@ import { CircularGauge } from '@/components/ui/CircularGauge';
 import { PercentileBar } from '@/components/ui/PercentileBar';
 import { Sparkline } from '@/components/ui/Sparkline';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
-import { MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, AlertCircle, CheckCircle2, TrendingUp } from 'lucide-react';
 
 const competitorsData = [
   { name: 'Aura AI', score: 72, initial: 'A' },
@@ -48,33 +48,36 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* 1. HERO ROW: 2-column grid (2fr / 1fr) with staggered mount delays */}
+      {/* 1. HERO ROW: 2-column grid (2fr / 1fr) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Cell (2fr): Featured Card */}
+        {/* Left Cell (2fr): Featured Visibility Score Card */}
         <Card delay={0.05} className="lg:col-span-2 flex flex-col justify-between p-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <span className="text-xs font-sans uppercase tracking-widest text-[#9C978C]">Primary Metric</span>
-              <h3 className="text-2xl font-serif font-medium text-[#F5F1EA] mt-1">Visibility Score</h3>
+              <h3 className="text-2xl font-serif font-medium text-[#F5F1EA] mt-0.5">Visibility Score</h3>
             </div>
             <span className="text-xs font-sans text-[#9C978C] bg-white/5 px-3 py-1 rounded-full border border-white/8">
               Tracked across 14 platforms
             </span>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-around my-6 gap-6">
-            {/* 150px Coral Gauge with 0.1s delay */}
+          <div className="flex flex-col sm:flex-row items-center justify-around my-4 gap-6">
+            {/* 150px Coral Gauge — primary metric, coral only */}
             <CircularGauge percentage={84} variant="coral" size={150} strokeWidth={8} delay={0.1} />
 
-            {/* Sparkline Trend Line with 0.2s delay */}
+            {/* Sparkline Trend */}
             <div className="flex flex-col items-center sm:items-start space-y-2">
               <span className="text-xs font-sans text-[#9C978C]">30-Day Trend</span>
               <Sparkline data={[62, 68, 65, 74, 78, 80, 84]} color="#D9714A" width={140} height={48} delay={0.2} />
-              <span className="text-xs font-sans text-[#D9714A] font-semibold">+12% increase</span>
+              <span className="text-xs font-sans text-[#D9714A] font-semibold flex items-center gap-1">
+                <TrendingUp className="h-3.5 w-3.5" />
+                +12% increase
+              </span>
             </div>
           </div>
 
-          <div className="text-xs font-sans text-[#9C978C] pt-2 border-t border-white/8 flex justify-between">
+          <div className="text-xs font-sans text-[#9C978C] pt-3 border-t border-white/8 flex justify-between">
             <span>Last updated 5 mins ago</span>
             <span>Confidence index: High</span>
           </div>
@@ -82,7 +85,7 @@ export default function Dashboard() {
 
         {/* Right Cell (1fr): Vertical Stack of 2 Smaller Cards */}
         <div className="flex flex-col gap-6">
-          {/* Card A: Compact Market Share Tile */}
+          {/* Card A: Compact Market Share Tile — sky blue gauge, secondary metric */}
           <Card delay={0.15} className="flex-1 p-5 flex items-center justify-between">
             <div>
               <span className="text-xs font-sans text-[#9C978C]">Market Share</span>
@@ -91,10 +94,11 @@ export default function Dashboard() {
               </div>
               <span className="text-xs font-sans text-[#9C978C]">Industry Rank #2</span>
             </div>
+            {/* Sky blue — secondary metric only */}
             <CircularGauge percentage={32} variant="sky-blue" size={56} strokeWidth={5} delay={0.25} />
           </Card>
 
-          {/* Card B: Plain Number Stat Card (Total Mentions with AnimatedNumber) */}
+          {/* Card B: Plain Number Stat Card — no gauge, just a big number */}
           <Card delay={0.2} className="flex-1 p-5 flex flex-col justify-center">
             <span className="text-xs font-sans text-[#9C978C]">Total Mentions</span>
             <div className="text-3xl font-sans font-bold text-[#F5F1EA] mt-1">
@@ -105,7 +109,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 2. FULL-WIDTH COMPETITIVE ANALYSIS CARD */}
+      {/* 2. FULL-WIDTH COMPETITIVE ANALYSIS CARD — 3 bars side by side */}
       <Card delay={0.25} className="p-6">
         <CardHeader className="p-0 mb-6">
           <CardTitle className="text-xl">Competitive Benchmark Analysis</CardTitle>
@@ -118,6 +122,7 @@ export default function Dashboard() {
             <div className="bg-white/2 p-4 rounded-xl border border-white/5">
               <div className="flex justify-between mb-1">
                 <span className="text-xs font-sans font-medium text-[#F5F1EA]">Customer Engagement</span>
+                {/* Coral — "you" marker, primary accent */}
                 <span className="text-xs font-sans font-bold text-[#D9714A]">
                   <AnimatedNumber value={78} suffix=" / 100" delay={250} />
                 </span>
@@ -148,25 +153,27 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      {/* 3. HORIZONTAL-SCROLLING COMPETITOR STRIP */}
+      {/* 3. HORIZONTAL-SCROLLING COMPETITOR STRIP — sky blue only, coral reserved for user */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-serif font-medium text-[#F5F1EA]">Competitor Tracking</h3>
           <span className="text-xs font-sans text-[#3FA9E0] hover:underline cursor-pointer">View all 12 competitors &rarr;</span>
         </div>
-        <div className="flex overflow-x-auto gap-4 pb-2 scrollbar-thin">
+        <div className="flex overflow-x-auto gap-3 pb-2" style={{ scrollbarWidth: 'thin' }}>
           {competitorsData.map((item, idx) => (
-            <div 
-              key={idx} 
-              className="min-w-[150px] bg-[#1C1917] border border-white/8 hover:border-white/20 transition-all duration-150 rounded-full py-2.5 px-4 flex items-center gap-3 shrink-0"
+            <div
+              key={idx}
+              className="min-w-[150px] bg-[#1C1917] border border-white/8 hover:border-[#3FA9E0]/30 transition-all duration-150 rounded-full py-2.5 px-4 flex items-center gap-3 shrink-0"
             >
-              <div className="h-7 w-7 rounded-full bg-[#3FA9E0]/20 text-[#3FA9E0] flex items-center justify-center text-xs font-sans font-bold border border-[#3FA9E0]/30">
+              {/* Sky blue avatars — competitors are never coral */}
+              <div className="h-7 w-7 rounded-full bg-[#3FA9E0]/20 text-[#3FA9E0] flex items-center justify-center text-xs font-sans font-bold border border-[#3FA9E0]/30 shrink-0">
                 {item.initial}
               </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-sans font-medium text-[#F5F1EA] truncate max-w-[70px]">{item.name}</span>
+              <div className="flex flex-col min-w-0">
+                <span className="text-xs font-sans font-medium text-[#F5F1EA] truncate">{item.name}</span>
+                {/* Sky blue score — secondary/informational */}
                 <span className="text-[11px] font-sans font-bold text-[#3FA9E0]">
-                  <AnimatedNumber value={item.score} suffix="% score" delay={400 + idx * 50} />
+                  <AnimatedNumber value={item.score} suffix="%" delay={400 + idx * 50} />
                 </span>
               </div>
             </div>
@@ -174,26 +181,27 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 4. BOTTOM ROW: Asymmetric 2-column grid */}
+      {/* 4. BOTTOM ROW: Asymmetric 2-column grid (7/5 of 12) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Recent Activity Timeline */}
-        <Card delay={0.3} className="lg:col-span-7 flex flex-col justify-between">
+        <Card delay={0.3} className="lg:col-span-7">
           <CardHeader>
             <CardTitle className="text-xl">Recent Activity</CardTitle>
             <CardDescription className="text-sm">
               Live updates and real-time mention tracking.
             </CardDescription>
           </CardHeader>
-          <CardContent className="divide-y divide-white/8">
+          <CardContent className="divide-y divide-white/8 p-0 px-6 pb-6">
             {recentActivity.map((act) => (
               <div key={act.id} className="py-3.5 flex items-start gap-4 first:pt-0 last:pb-0">
+                {/* Sky blue icon circles — informational, not user-brand coral */}
                 <div className="h-8 w-8 rounded-full bg-[#3FA9E0]/10 text-[#3FA9E0] flex items-center justify-center shrink-0 border border-[#3FA9E0]/20 mt-0.5">
                   <act.icon className="h-4 w-4 stroke-[1.5]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-sans font-medium text-[#F5F1EA]">{act.title}</span>
-                    <span className="text-xs font-sans text-[#9C978C]">{act.time}</span>
+                    <span className="text-xs font-sans text-[#9C978C] shrink-0 ml-4">{act.time}</span>
                   </div>
                   <p className="text-xs font-sans text-[#9C978C] mt-0.5 truncate">{act.description}</p>
                 </div>
@@ -202,7 +210,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Right: Actions Panel */}
+        {/* Right: Actions Panel — primary / secondary / tertiary in order */}
         <Card delay={0.35} className="lg:col-span-5">
           <CardHeader>
             <CardTitle className="text-xl">Actions</CardTitle>
@@ -210,13 +218,16 @@ export default function Dashboard() {
               Recommended workflow operations.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
+            {/* One primary button per page — coral fill */}
             <Button className="w-full justify-center" variant="primary">
               Generate Audit Report
             </Button>
+            {/* Secondary — sky blue outline */}
             <Button className="w-full justify-center" variant="secondary">
               Review New Mentions
             </Button>
+            {/* Tertiary — neutral white outline */}
             <Button className="w-full justify-center" variant="tertiary">
               Manage Competitors
             </Button>
