@@ -33,13 +33,16 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login')
+  const isAuthCallback = request.nextUrl.pathname.startsWith('/auth/callback')
   
-  if (!user && !isAuthRoute) {
+  // If not logged in, and not on an auth-related route, redirect to login
+  if (!user && !isAuthRoute && !isAuthCallback) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
+  // If logged in, and trying to access the login page, redirect to home
   if (user && isAuthRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/'
