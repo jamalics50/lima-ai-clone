@@ -27,27 +27,11 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // refreshing the auth token
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  const isAuthRoute = request.nextUrl.pathname.startsWith('/login')
-  const isAuthCallback = request.nextUrl.pathname.startsWith('/auth/callback')
-  
-  // If not logged in, and not on an auth-related route, redirect to login
-  if (!user && !isAuthRoute && !isAuthCallback) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
-  }
-
-  // If logged in, and trying to access the login page, redirect to home
-  if (user && isAuthRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    return NextResponse.redirect(url)
-  }
+  // IMPORTANT: Do NOT add redirect logic here.
+  // This function's only job is to refresh the Supabase session cookie.
+  // All auth-based redirects are handled by the route layouts themselves.
+  // Adding redirects here causes infinite loops when cookies are in a partial state.
+  await supabase.auth.getUser()
 
   return supabaseResponse
 }
