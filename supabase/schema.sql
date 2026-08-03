@@ -22,6 +22,7 @@ ALTER TABLE public.workspace_members ENABLE ROW LEVEL SECURITY;
 
 -- 4. RLS Policies for workspaces
 -- Users can view workspaces they are a member of
+DROP POLICY IF EXISTS "Users can view their own workspaces" ON public.workspaces;
 CREATE POLICY "Users can view their own workspaces" ON public.workspaces
     FOR SELECT USING (
         EXISTS (
@@ -33,6 +34,7 @@ CREATE POLICY "Users can view their own workspaces" ON public.workspaces
 
 -- 5. RLS Policies for workspace_members
 -- Users can view members of their own workspaces
+DROP POLICY IF EXISTS "Users can view members of their workspaces" ON public.workspace_members;
 CREATE POLICY "Users can view members of their workspaces" ON public.workspace_members
     FOR SELECT USING (
         EXISTS (
@@ -146,18 +148,22 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- RLS Policies for new tables
 
 -- brands
+DROP POLICY IF EXISTS "Users can access their workspace brands" ON public.brands;
 CREATE POLICY "Users can access their workspace brands" ON public.brands
     FOR ALL USING (public.user_has_workspace_access(workspace_id));
 
 -- competitors
+DROP POLICY IF EXISTS "Users can access their workspace competitors" ON public.competitors;
 CREATE POLICY "Users can access their workspace competitors" ON public.competitors
     FOR ALL USING (public.user_has_workspace_access(workspace_id));
 
 -- prompts
+DROP POLICY IF EXISTS "Users can access their workspace prompts" ON public.prompts;
 CREATE POLICY "Users can access their workspace prompts" ON public.prompts
     FOR ALL USING (public.user_has_workspace_access(workspace_id));
 
 -- platform_runs (access via prompt's workspace)
+DROP POLICY IF EXISTS "Users can access their workspace platform_runs" ON public.platform_runs;
 CREATE POLICY "Users can access their workspace platform_runs" ON public.platform_runs
     FOR ALL USING (
         EXISTS (
@@ -168,6 +174,7 @@ CREATE POLICY "Users can access their workspace platform_runs" ON public.platfor
     );
 
 -- mentions (access via platform_run's prompt's workspace)
+DROP POLICY IF EXISTS "Users can access their workspace mentions" ON public.mentions;
 CREATE POLICY "Users can access their workspace mentions" ON public.mentions
     FOR ALL USING (
         EXISTS (
@@ -179,6 +186,7 @@ CREATE POLICY "Users can access their workspace mentions" ON public.mentions
     );
 
 -- citations (access via platform_run's prompt's workspace)
+DROP POLICY IF EXISTS "Users can access their workspace citations" ON public.citations;
 CREATE POLICY "Users can access their workspace citations" ON public.citations
     FOR ALL USING (
         EXISTS (
