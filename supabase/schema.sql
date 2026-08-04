@@ -42,11 +42,7 @@ CREATE POLICY "Users can create workspaces" ON public.workspaces
 DROP POLICY IF EXISTS "Users can view members of their workspaces" ON public.workspace_members;
 CREATE POLICY "Users can view members of their workspaces" ON public.workspace_members
     FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM public.workspace_members wm
-            WHERE wm.workspace_id = workspace_members.workspace_id
-            AND wm.user_id = auth.uid()
-        )
+        user_id = auth.uid()
     );
 
 DROP POLICY IF EXISTS "Users can insert themselves into workspaces" ON public.workspace_members;
