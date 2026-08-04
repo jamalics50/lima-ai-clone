@@ -34,7 +34,7 @@ export function CircularGauge({
     return () => clearTimeout(timer);
   }, [delay]);
 
-  const strokeColor = variant === 'coral' ? '#D9714A' : '#3FA9E0';
+  const strokeColor = variant === 'coral' ? 'var(--accent-primary)' : 'var(--accent-blue)';
   const currentOffset = mounted ? targetOffset : circumference;
 
   return (
@@ -45,7 +45,7 @@ export function CircularGauge({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgba(255, 255, 255, 0.08)"
+          stroke="rgba(255, 255, 255, 0.1)"
           strokeWidth={strokeWidth}
           fill="transparent"
         />
@@ -60,7 +60,7 @@ export function CircularGauge({
           strokeDasharray={circumference}
           strokeDashoffset={currentOffset}
           style={{
-            transition: `stroke-dashoffset 1.1s var(--ease-primary)`,
+            transition: `stroke-dashoffset 600ms var(--ease-primary)`,
           }}
           strokeLinecap="round"
         />
@@ -72,7 +72,7 @@ export function CircularGauge({
           duration={900}
           delay={delay * 1000}
           suffix="%"
-          className="font-sans text-3xl font-semibold tracking-tight text-[#F5F1EA]"
+          className="font-sans text-3xl font-semibold tracking-tight text-foreground"
         />
       </div>
     </div>

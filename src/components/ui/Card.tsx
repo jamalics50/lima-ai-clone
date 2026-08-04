@@ -12,7 +12,7 @@ export function Card({ className = '', delay = 0, style, ...props }: CardProps) 
 
   return (
     <div 
-      className={`rounded-2xl border border-white/8 bg-[#1C1917] text-[#F5F1EA] shadow-none animate-card-mount hover:-translate-y-[3px] hover:border-white/20 transition-all duration-[180ms] ${className}`} 
+      className={`rounded-lg border border-border bg-card text-card-foreground shadow-sm animate-card-mount transition-all duration-[180ms] ${className}`} 
       style={mountStyle}
       {...props} 
     />
@@ -24,11 +24,11 @@ export function CardHeader({ className = '', ...props }: React.HTMLAttributes<HT
 }
 
 export function CardTitle({ className = '', ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={`font-serif text-lg font-medium tracking-tight text-[#F5F1EA] ${className}`} {...props} />;
+  return <h3 className={`font-sans text-lg font-medium tracking-tight text-foreground ${className}`} {...props} />;
 }
 
 export function CardDescription({ className = '', ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={`text-sm text-[#9C978C] ${className}`} {...props} />;
+  return <p className={`text-sm text-muted-foreground ${className}`} {...props} />;
 }
 
 export function CardContent({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {

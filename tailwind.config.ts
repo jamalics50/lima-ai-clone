@@ -9,30 +9,43 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#141210",
-        foreground: "#F5F1EA",
+        background: "var(--bg-base)",
+        foreground: "var(--text-primary)",
         card: {
-          DEFAULT: "#1C1917",
-          foreground: "#F5F1EA",
+          DEFAULT: "var(--surface-1)",
+          foreground: "var(--text-primary)",
         },
-        border: "rgba(255, 255, 255, 0.08)",
+        surface: {
+          1: "var(--surface-1)",
+          2: "var(--surface-2)",
+          glass: "var(--surface-glass)",
+        },
+        border: "var(--border-subtle)",
         coral: {
-          DEFAULT: "#D9714A",
-          text: "#4A1B0C",
+          DEFAULT: "var(--accent-primary)",
+          hover: "var(--accent-primary-hover)",
+          muted: "var(--accent-primary-muted)",
+          text: "#000000",
         },
         sky: {
-          DEFAULT: "#3FA9E0",
+          DEFAULT: "var(--accent-blue)",
+        },
+        emerald: {
+          DEFAULT: "var(--accent-emerald)",
+        },
+        rose: {
+          DEFAULT: "var(--accent-rose)",
         },
         muted: {
-          DEFAULT: "rgba(255, 255, 255, 0.05)",
-          foreground: "#9C978C",
+          DEFAULT: "var(--surface-glass)",
+          foreground: "var(--text-secondary)",
         }
       },
       borderRadius: {
-        DEFAULT: "16px",
-        md: "16px",
-        lg: "20px",
-        sm: "8px",
+        DEFAULT: "var(--radius-md)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        sm: "var(--radius-sm)",
         full: "9999px",
       },
       fontFamily: {
@@ -40,10 +53,11 @@ const config: Config = {
         serif: ["var(--font-fraunces)", "serif"],
       },
       boxShadow: {
-        sm: "none",
-        DEFAULT: "none",
-        md: "none",
-        lg: "none",
+        sm: "var(--shadow-card)",
+        DEFAULT: "var(--shadow-card)",
+        md: "var(--shadow-card)",
+        lg: "var(--shadow-card)",
+        glow: "var(--shadow-glow-accent)",
       }
     },
   },

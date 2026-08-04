@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { Button } from '@/components/ui/Button';
 import { MentionsTable, MentionRow } from './MentionsTable';
 import { Layers } from 'lucide-react';
+import { MotionWrapper } from '@/components/ui/MotionWrapper';
 
 const PAGE_SIZE = 20;
 const ALL_PLATFORMS = [
@@ -108,12 +109,12 @@ export default async function MentionsPage({ searchParams }: PageProps) {
   const hasAnyData = allRows.length > 0;
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto py-2">
+    <div className="space-y-8 max-w-6xl mx-auto py-2 overflow-x-hidden">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <MotionWrapper delay={0} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-serif font-medium tracking-tight text-[#F5F1EA]">Mentions &amp; Coverage</h2>
-          <p className="text-[#9C978C] text-sm font-sans">
+          <h2 className="text-3xl font-serif font-medium tracking-tight text-foreground mb-1">Mentions &amp; Coverage</h2>
+          <p className="text-muted-foreground text-sm font-sans">
             {hasAnyData
               ? `${allRows.length} mention${allRows.length !== 1 ? 's' : ''} tracked across ${new Set(runs.map(r => r.platform_name)).size} AI platforms`
               : 'Run your prompts to start capturing brand mentions across AI platforms.'}
@@ -121,41 +122,45 @@ export default async function MentionsPage({ searchParams }: PageProps) {
         </div>
         {/* One primary button per page — coral */}
         <Button variant="primary">Export CSV</Button>
-      </div>
+      </MotionWrapper>
 
       {!hasAnyData ? (
-        /* Full-page empty state — sky blue accent border */
-        <div className="border border-[#3FA9E0]/30 border-dashed rounded-2xl py-20 flex flex-col items-center gap-4 text-center">
-          <div className="h-14 w-14 rounded-full border border-[#3FA9E0]/40 bg-[#3FA9E0]/10 flex items-center justify-center">
-            <Layers className="h-7 w-7 text-[#3FA9E0]" />
+        /* Full-page empty state */
+        <MotionWrapper delay={0.1}>
+          <div className="border border-border border-dashed rounded-2xl py-20 flex flex-col items-center gap-5 text-center bg-card shadow-sm">
+            <div className="h-16 w-16 rounded-2xl border border-sky/20 bg-sky/5 flex items-center justify-center">
+              <Layers className="h-8 w-8 text-sky" />
+            </div>
+            <div>
+              <p className="text-xl font-serif font-medium text-foreground tracking-tight">No mentions yet</p>
+              <p className="text-sm font-sans text-muted-foreground mt-2 max-w-sm mx-auto">
+                Head to Prompts and click &ldquo;Run Now&rdquo;, or visit the Seed page to populate demo data instantly.
+              </p>
+            </div>
+            <div className="flex gap-3 mt-2">
+              <Button variant="primary" size="sm">
+                <a href="/prompts">Go to Prompts</a>
+              </Button>
+              <Button variant="secondary" size="sm">
+                <a href="/seed">Seed Demo Data</a>
+              </Button>
+            </div>
           </div>
-          <div>
-            <p className="text-lg font-serif font-medium text-[#F5F1EA]">No mentions yet</p>
-            <p className="text-sm font-sans text-[#9C978C] mt-1 max-w-xs mx-auto">
-              Head to Prompts and click &ldquo;Run Now&rdquo;, or visit the Seed page to populate demo data instantly.
-            </p>
-          </div>
-          <div className="flex gap-3 mt-2">
-            <Button variant="primary" size="sm">
-              <a href="/prompts">Go to Prompts</a>
-            </Button>
-            <Button variant="secondary" size="sm">
-              <a href="/seed">Seed Demo Data</a>
-            </Button>
-          </div>
-        </div>
+        </MotionWrapper>
       ) : (
         /* Real filterable, paginated table */
-        <MentionsTable
-          rows={paginatedRows}
-          total={total}
-          page={page}
-          pageSize={PAGE_SIZE}
-          platform={platform}
-          sentiment={sentiment}
-          type={type}
-          platforms={ALL_PLATFORMS}
-        />
+        <MotionWrapper delay={0.1}>
+          <MentionsTable
+            rows={paginatedRows}
+            total={total}
+            page={page}
+            pageSize={PAGE_SIZE}
+            platform={platform}
+            sentiment={sentiment}
+            type={type}
+            platforms={ALL_PLATFORMS}
+          />
+        </MotionWrapper>
       )}
     </div>
   );

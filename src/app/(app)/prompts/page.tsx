@@ -1,8 +1,9 @@
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { BookOpen, Plus, Clock, Layers } from 'lucide-react';
+import { Clock, Layers } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { PromptRow } from './PromptRow';
+import { MotionWrapper } from '@/components/ui/MotionWrapper';
 
 interface Prompt {
   id: string;
@@ -64,41 +65,42 @@ export default async function PromptsPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto py-2">
+    <div className="space-y-8 max-w-6xl mx-auto py-2 overflow-x-hidden">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <MotionWrapper delay={0} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-serif font-medium tracking-tight text-[#F5F1EA]">Prompt Library</h2>
-          <p className="text-[#9C978C] text-sm font-sans">
+          <h2 className="text-3xl font-serif font-medium tracking-tight text-foreground">Prompt Library</h2>
+          <p className="text-muted-foreground text-sm font-sans mt-1">
             Manage, test, and optimize AI prompts across your active workspace.
           </p>
         </div>
-        {/* One primary button per page — coral */}
+        {/* One primary button per page */}
         <Button variant="primary" className="flex items-center gap-2">
-          <Plus className="h-4 w-4" /> Create Prompt
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create Prompt
         </Button>
-      </div>
+      </MotionWrapper>
 
       {/* Prompt List */}
-      <Card className="p-6">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="h-8 w-8 rounded-full bg-[#3FA9E0]/15 text-[#3FA9E0] flex items-center justify-center border border-[#3FA9E0]/25">
-            <BookOpen className="h-4 w-4" />
+      <MotionWrapper delay={0.1}>
+        <Card className="p-7 shadow-sm hover:-translate-y-1 transition-all duration-300">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-10 w-10 rounded-lg bg-sky/10 text-sky flex items-center justify-center border border-sky/20">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
           </div>
           <div>
-            <h3 className="text-lg font-serif font-medium text-[#F5F1EA]">Saved Prompt Workflows</h3>
-            <p className="text-xs font-sans text-[#9C978C]">{prompts.length} prompt{prompts.length !== 1 ? 's' : ''} configured</p>
+            <h3 className="text-lg font-serif font-medium tracking-tight text-foreground">Saved Prompt Workflows</h3>
+            <p className="text-sm font-sans text-muted-foreground">{prompts.length} prompt{prompts.length !== 1 ? 's' : ''} configured</p>
           </div>
         </div>
 
         {prompts.length === 0 ? (
-          /* Empty state — sky blue border, informational */
-          <div className="border border-[#3FA9E0]/30 border-dashed rounded-xl py-14 flex flex-col items-center text-center gap-3">
-            <div className="h-12 w-12 rounded-full border border-[#3FA9E0]/40 bg-[#3FA9E0]/10 flex items-center justify-center">
-              <Layers className="h-6 w-6 text-[#3FA9E0]" />
+          /* Empty state */
+          <div className="border border-border border-dashed rounded-2xl py-20 flex flex-col items-center text-center gap-4 bg-card shadow-sm">
+            <div className="h-16 w-16 rounded-2xl border border-sky/20 bg-sky/5 flex items-center justify-center">
+              <Layers className="h-8 w-8 text-sky" />
             </div>
-            <p className="text-base font-serif font-medium text-[#F5F1EA]">No prompts yet</p>
-            <p className="text-sm font-sans text-[#9C978C] max-w-xs">
+            <p className="text-xl font-serif font-medium tracking-tight text-foreground">No prompts yet</p>
+            <p className="text-sm font-sans text-muted-foreground max-w-sm">
               Complete onboarding or create a prompt manually to start tracking brand visibility across AI platforms.
             </p>
           </div>
@@ -110,39 +112,42 @@ export default async function PromptsPage() {
           </div>
         )}
       </Card>
+      </MotionWrapper>
 
       {/* Recent Runs — shown only after at least one run has occurred */}
       {recentRuns.length > 0 && (
-        <Card className="p-0 overflow-hidden">
-          <div className="flex items-center gap-3 p-6 border-b border-white/8">
-            <div className="h-8 w-8 rounded-full bg-[#D9714A]/15 text-[#D9714A] flex items-center justify-center border border-[#D9714A]/25">
-              <Clock className="h-4 w-4" />
+        <MotionWrapper delay={0.2}>
+          <Card className="p-0 overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300">
+          <div className="flex items-center gap-3 p-6 border-b border-border">
+            <div className="h-10 w-10 rounded-lg bg-coral/10 text-coral flex items-center justify-center border border-coral/20">
+              <Clock className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-lg font-serif font-medium text-[#F5F1EA]">Recent Runs</h3>
-              <p className="text-xs font-sans text-[#9C978C]">Latest pipeline executions across all prompts</p>
+              <h3 className="text-lg font-serif font-medium tracking-tight text-foreground">Recent Runs</h3>
+              <p className="text-sm font-sans text-muted-foreground">Latest pipeline executions across all prompts</p>
             </div>
           </div>
 
           {/* Table-style run log — different rhythm from card grid */}
-          <div className="divide-y divide-white/8">
+          <div className="divide-y divide-border">
             {recentRuns.map((run) => (
-              <div key={run.id} className="flex items-center justify-between px-6 py-3.5 hover:bg-white/2 transition-colors">
+              <div key={run.id} className="flex items-center justify-between px-6 py-4 hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-4">
                   {/* Coral dot = brand signal / run activity */}
-                  <div className="h-2 w-2 rounded-full bg-[#D9714A] shrink-0" />
+                  <div className="h-2 w-2 rounded-full bg-coral shrink-0" />
                   <div>
-                    <p className="text-sm font-sans font-medium text-[#F5F1EA] truncate max-w-xs">{run.prompt_text}</p>
-                    <p className="text-xs font-sans text-[#3FA9E0]">{run.platform_name}</p>
+                    <p className="text-sm font-sans font-medium text-foreground truncate max-w-xs">{run.prompt_text}</p>
+                    <p className="text-xs font-sans text-sky mt-0.5">{run.platform_name}</p>
                   </div>
                 </div>
-                <span className="text-xs font-sans text-[#9C978C] shrink-0 ml-4">
+                <span className="text-xs font-sans text-muted-foreground shrink-0 ml-4">
                   {new Date(run.created_at).toLocaleString()}
                 </span>
               </div>
             ))}
           </div>
-        </Card>
+          </Card>
+        </MotionWrapper>
       )}
     </div>
   );

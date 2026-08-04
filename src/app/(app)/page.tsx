@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/Button';
 import { Layers, TrendingUp, CheckCircle2, MessageSquare, AlertCircle, Lightbulb, AlertTriangle, Info } from 'lucide-react';
 import { getOrGenerateInsights } from '@/app/(app)/insights/actions';
+import { MotionWrapper } from '@/components/ui/MotionWrapper';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -30,13 +31,13 @@ const PLATFORM_SHORT: Record<string, string> = {
 
 function EmptyState({ title, body }: { title: string; body: string }) {
   return (
-    <div className="border border-[#3FA9E0]/30 border-dashed rounded-2xl py-16 flex flex-col items-center gap-4 text-center">
-      <div className="h-14 w-14 rounded-full border border-[#3FA9E0]/40 bg-[#3FA9E0]/10 flex items-center justify-center">
-        <Layers className="h-7 w-7 text-[#3FA9E0]" />
+    <div className="border border-border border-dashed rounded-2xl py-20 flex flex-col items-center gap-5 text-center bg-card shadow-sm">
+      <div className="h-16 w-16 rounded-2xl border border-sky/20 bg-sky/5 flex items-center justify-center">
+        <Layers className="h-8 w-8 text-sky" />
       </div>
       <div>
-        <p className="text-lg font-serif font-medium text-[#F5F1EA]">{title}</p>
-        <p className="text-sm font-sans text-[#9C978C] mt-1 max-w-xs mx-auto">{body}</p>
+        <p className="text-xl font-serif font-medium text-foreground tracking-tight">{title}</p>
+        <p className="text-sm font-sans text-muted-foreground mt-2 max-w-sm mx-auto">{body}</p>
       </div>
       <div className="flex gap-3 mt-2">
         <Button variant="primary" size="sm" onClick={undefined}>
@@ -203,36 +204,38 @@ export default async function Dashboard() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-8 max-w-6xl mx-auto py-2">
+    <div className="space-y-10 max-w-6xl mx-auto py-2 overflow-x-hidden">
       {/* Page header */}
-      <div>
-        <h2 className="text-3xl font-serif font-medium tracking-tight text-[#F5F1EA] mb-1">
+      <MotionWrapper delay={0}>
+        <h2 className="text-3xl font-serif font-medium tracking-tight text-foreground mb-1.5">
           Workspace Overview
         </h2>
-        <p className="text-[#9C978C] text-sm font-sans">
+        <p className="text-muted-foreground text-sm font-sans">
           {hasData
             ? `Brand visibility insights across ${trackedPlatforms} AI platform${trackedPlatforms !== 1 ? 's' : ''} — last 30 days`
             : 'Run your first prompts or seed demo data to see insights here.'}
         </p>
-      </div>
+      </MotionWrapper>
 
       {!hasData ? (
-        <EmptyState
-          title="No data yet"
-          body="Complete onboarding and run your first prompt — or seed 30 days of demo data to see the dashboard in action."
-        />
+        <MotionWrapper delay={0.1}>
+          <EmptyState
+            title="No data yet"
+            body="Complete onboarding and run your first prompt — or seed 30 days of demo data to see the dashboard in action."
+          />
+        </MotionWrapper>
       ) : (
         <>
           {/* ── 1. HERO ROW (2fr / 1fr) ──────────────────────────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left (2fr): Featured Visibility card */}
-            <Card delay={0.05} className="lg:col-span-2 flex flex-col justify-between p-6">
+          <MotionWrapper delay={0.1} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left (2fr): Featured Visibility card — flagship glow */}
+            <Card delay={0.05} className="lg:col-span-2 flex flex-col justify-between p-7 shadow-glow border-coral/20">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <span className="text-xs font-sans uppercase tracking-widest text-[#9C978C]">Primary Metric</span>
-                  <h3 className="text-2xl font-serif font-medium text-[#F5F1EA] mt-0.5">Visibility Score</h3>
+                  <span className="text-xs font-sans uppercase tracking-widest text-muted-foreground font-semibold">Primary Metric</span>
+                  <h3 className="text-2xl font-serif font-medium text-foreground tracking-tight mt-1">Visibility Score</h3>
                 </div>
-                <span className="text-xs font-sans text-[#9C978C] bg-white/5 px-3 py-1 rounded-full border border-white/8">
+                <span className="text-xs font-sans text-muted-foreground bg-white/5 px-3 py-1.5 rounded-full border border-border">
                   Tracked across {trackedPlatforms} platform{trackedPlatforms !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -249,22 +252,21 @@ export default async function Dashboard() {
 
                 {/* Sparkline trend */}
                 <div className="flex flex-col items-center sm:items-start space-y-2">
-                  <span className="text-xs font-sans text-[#9C978C]">30-Day Citation Trend</span>
+                  <span className="text-xs font-sans text-muted-foreground">30-Day Citation Trend</span>
                   <Sparkline
                     data={sparklineData.length > 1 ? sparklineData : [0, 1, 2, 3, 4, 5, 6, 7]}
-                    color="#D9714A"
                     width={150}
                     height={52}
                     delay={0.3}
                   />
-                  <span className={`text-xs font-sans font-semibold flex items-center gap-1 ${trendPct >= 0 ? 'text-[#D9714A]' : 'text-[#9C978C]'}`}>
+                  <span className={`text-xs font-sans font-medium flex items-center gap-1 ${trendPct >= 0 ? 'text-coral' : 'text-muted-foreground'}`}>
                     <TrendingUp className="h-3.5 w-3.5" />
                     {trendPct >= 0 ? '+' : ''}{trendPct}% vs prior 15 days
                   </span>
                 </div>
               </div>
 
-              <div className="text-xs font-sans text-[#9C978C] pt-3 border-t border-white/8 flex justify-between">
+              <div className="text-xs font-sans text-muted-foreground pt-4 border-t border-border flex justify-between">
                 <span>{totalRuns} platform runs analysed</span>
                 <span>{totalBrandMentions} brand mentions captured</span>
               </div>
@@ -273,45 +275,46 @@ export default async function Dashboard() {
             {/* Right (1fr): Stack of 2 small cards */}
             <div className="flex flex-col gap-6">
               {/* Share of Voice — sky blue secondary gauge */}
-              <Card delay={0.15} className="flex-1 p-5 flex items-center justify-between">
+              <Card delay={0.15} className="flex-1 p-6 flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-sans text-[#9C978C]">Share of Voice</span>
-                  <div className="text-2xl font-sans font-semibold text-[#F5F1EA] mt-1">
+                  <span className="text-xs font-sans text-muted-foreground">Share of Voice</span>
+                  <div className="text-3xl font-serif font-medium text-foreground mt-1">
                     <AnimatedNumber value={shareOfVoice} suffix="%" delay={150} />
                   </div>
-                  <span className="text-xs font-sans text-[#9C978C]">vs all mentions</span>
+                  <span className="text-xs font-sans text-muted-foreground mt-1 block">vs all mentions</span>
                 </div>
                 {/* Sky blue — secondary/informational metric only */}
-                <CircularGauge percentage={shareOfVoice} variant="sky-blue" size={56} strokeWidth={5} delay={0.25} />
+                <CircularGauge percentage={shareOfVoice} variant="sky-blue" size={64} strokeWidth={6} delay={0.25} />
               </Card>
 
               {/* Total Mentions — plain big number, no gauge */}
-              <Card delay={0.2} className="flex-1 p-5 flex flex-col justify-center">
-                <span className="text-xs font-sans text-[#9C978C]">Brand Mentions</span>
-                <div className="text-3xl font-sans font-bold text-[#F5F1EA] mt-1">
+              <Card delay={0.2} className="flex-1 p-6 flex flex-col justify-center">
+                <span className="text-xs font-sans text-muted-foreground">Brand Mentions</span>
+                <div className="text-4xl font-serif font-medium text-foreground tracking-tight mt-1">
                   <AnimatedNumber value={totalBrandMentions} delay={200} />
                 </div>
-                <span className="text-xs font-sans text-[#3FA9E0] mt-1 font-medium">
+                <span className="text-xs font-sans text-sky mt-2 font-medium">
                   Last 30 days
                 </span>
               </Card>
             </div>
-          </div>
+          </MotionWrapper>
 
           {/* ── 2. FULL-WIDTH COMPETITIVE ANALYSIS (3-column PercentileBars) ── */}
-          <Card delay={0.25} className="p-6">
+          <MotionWrapper delay={0.2}>
+            <Card delay={0.25} className="p-7 hover:-translate-y-1 transition-all duration-300">
             <CardHeader className="p-0 mb-6">
-              <CardTitle className="text-xl">Competitive Benchmark Analysis</CardTitle>
+              <CardTitle className="text-xl font-semibold">Competitive Benchmark Analysis</CardTitle>
               <CardDescription className="text-sm">
                 Your brand vs. competitor average across three core visibility vectors.
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white/2 rounded-xl border border-white/5 p-4">
+                <div className="bg-white/[0.02] rounded-xl border border-border p-5">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs font-sans font-medium text-[#F5F1EA]">Positive Sentiment</span>
-                    <span className="text-xs font-sans font-bold text-[#D9714A]">
+                    <span className="text-xs font-sans font-medium text-foreground">Positive Sentiment</span>
+                    <span className="text-sm font-sans font-semibold text-coral">
                       <AnimatedNumber value={brandPositivePct} suffix="%" delay={300} />
                     </span>
                   </div>
@@ -319,20 +322,20 @@ export default async function Dashboard() {
                   <PercentileBar score={brandPositivePct} average={compPositivePct} />
                 </div>
 
-                <div className="bg-white/2 rounded-xl border border-white/5 p-4">
+                <div className="bg-white/[0.02] rounded-xl border border-border p-5">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs font-sans font-medium text-[#F5F1EA]">Share of Voice</span>
-                    <span className="text-xs font-sans font-bold text-[#D9714A]">
+                    <span className="text-xs font-sans font-medium text-foreground">Share of Voice</span>
+                    <span className="text-sm font-sans font-semibold text-coral">
                       <AnimatedNumber value={shareOfVoice} suffix="%" delay={350} />
                     </span>
                   </div>
                   <PercentileBar score={shareOfVoice} average={Math.round((100 - shareOfVoice) / Math.max((competitors ?? []).length, 1))} />
                 </div>
 
-                <div className="bg-white/2 rounded-xl border border-white/5 p-4">
+                <div className="bg-white/[0.02] rounded-xl border border-border p-5">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs font-sans font-medium text-[#F5F1EA]">Platform Reach</span>
-                    <span className="text-xs font-sans font-bold text-[#D9714A]">
+                    <span className="text-xs font-sans font-medium text-foreground">Platform Reach</span>
+                    <span className="text-sm font-sans font-semibold text-coral">
                       <AnimatedNumber value={platformReach} suffix="%" delay={400} />
                     </span>
                   </div>
@@ -341,13 +344,14 @@ export default async function Dashboard() {
               </div>
             </CardContent>
           </Card>
+          </MotionWrapper>
 
           {/* ── 3. HORIZONTAL COMPETITOR STRIP — sky blue only ────────────── */}
           {competitorStrip.length > 0 && (
-            <div className="space-y-3">
+            <MotionWrapper delay={0.3} className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-serif font-medium text-[#F5F1EA]">Competitor Tracking</h3>
-                <a href="/competitors" className="text-xs font-sans text-[#3FA9E0] hover:underline">
+                <h3 className="text-lg font-serif font-medium text-foreground tracking-tight">Competitor Tracking</h3>
+                <a href="/competitors" className="text-xs font-sans text-sky font-medium hover:underline">
                   Full analysis →
                 </a>
               </div>
@@ -356,33 +360,33 @@ export default async function Dashboard() {
                 {competitorStrip.map((comp, idx) => (
                   <div
                     key={comp.id}
-                    className="min-w-[150px] shrink-0 bg-[#1C1917] border border-white/8 hover:border-[#3FA9E0]/30 transition-all duration-150 rounded-full py-2.5 px-4 flex items-center gap-3"
+                    className="min-w-[150px] shrink-0 bg-card border border-border hover:border-sky/30 transition-all duration-200 rounded-xl py-3 px-4 flex items-center gap-3 shadow-sm hover:shadow-md"
                   >
                     {/* Sky blue avatar — competitors are NEVER coral */}
-                    <div className="h-7 w-7 rounded-full bg-[#3FA9E0]/20 text-[#3FA9E0] flex items-center justify-center text-xs font-sans font-bold border border-[#3FA9E0]/30 shrink-0">
+                    <div className="h-8 w-8 rounded-lg bg-sky/10 text-sky flex items-center justify-center text-xs font-sans font-bold border border-sky/20 shrink-0">
                       {comp.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                      <span className="text-xs font-sans font-medium text-[#F5F1EA] block truncate">{comp.name}</span>
-                      <span className="text-[11px] font-sans font-bold text-[#3FA9E0]">
+                      <span className="text-xs font-sans font-medium text-foreground block truncate">{comp.name}</span>
+                      <span className="text-[11px] font-sans font-bold text-sky">
                         <AnimatedNumber value={comp.score} suffix="%" delay={450 + idx * 50} />
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </MotionWrapper>
           )}
 
           {/* ── 4. INSIGHTS PANEL ─────────────────────────────────────────── */}
           {insightItems.length > 0 && (
-            <div className="space-y-3">
+            <MotionWrapper delay={0.4} className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-serif font-medium text-[#F5F1EA] flex items-center gap-2">
-                  <Lightbulb className="h-5 w-5 text-[#D9714A]" />
+                <h3 className="text-lg font-serif font-medium text-foreground tracking-tight flex items-center gap-2">
+                  <Lightbulb className="h-5 w-5 text-coral" />
                   Insights
                 </h3>
-                <span className="text-xs font-sans text-[#9C978C] bg-white/5 px-3 py-1 rounded-full border border-white/8">
+                <span className="text-xs font-sans text-muted-foreground bg-white/5 px-3 py-1 rounded-full border border-border">
                   Auto-generated · updated daily
                 </span>
               </div>
@@ -390,21 +394,21 @@ export default async function Dashboard() {
                 {insightItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className={`bg-[#1C1917] rounded-2xl border p-5 space-y-2 ${
+                    className={`bg-card rounded-2xl border-l-2 border p-5 space-y-2 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                       item.type === 'warning'
-                        ? 'border-[#D9714A]/25'
+                        ? 'border-l-coral border-coral/20 hover:border-coral/35'
                         : item.type === 'opportunity'
-                        ? 'border-[#3FA9E0]/25'
-                        : 'border-white/8'
+                        ? 'border-l-sky border-sky/20 hover:border-sky/35'
+                        : 'border-l-border border-border hover:border-white/20'
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <div className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 border ${
                         item.type === 'warning'
-                          ? 'bg-[#D9714A]/15 text-[#D9714A] border-[#D9714A]/25'
+                          ? 'bg-coral/10 text-coral border-coral/20'
                           : item.type === 'opportunity'
-                          ? 'bg-[#3FA9E0]/10 text-[#3FA9E0] border-[#3FA9E0]/20'
-                          : 'bg-white/5 text-[#9C978C] border-white/8'
+                          ? 'bg-sky/10 text-sky border-sky/20'
+                          : 'bg-white/5 text-muted-foreground border-border'
                       }`}>
                         {item.type === 'warning'
                           ? <AlertTriangle className="h-4 w-4 stroke-[1.5]" />
@@ -413,34 +417,34 @@ export default async function Dashboard() {
                           : <Info className="h-4 w-4 stroke-[1.5]" />
                         }
                       </div>
-                      <p className="text-sm font-sans font-semibold text-[#F5F1EA] leading-snug">{item.headline}</p>
+                      <p className="text-sm font-sans font-medium text-foreground leading-snug">{item.headline}</p>
                     </div>
-                    <p className="text-xs font-sans text-[#9C978C] leading-relaxed pl-11">{item.body}</p>
+                    <p className="text-[13px] font-sans text-muted-foreground leading-relaxed pl-11">{item.body}</p>
                   </div>
                 ))}
               </div>
-            </div>
+            </MotionWrapper>
           )}
 
           {/* ── 5. BOTTOM ROW: asymmetric 7/5 ────────────────────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <MotionWrapper delay={0.5} className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left (7): Recent Activity timeline */}
-            <Card delay={0.3} className="lg:col-span-7">
+            <Card delay={0.3} className="lg:col-span-7 hover:-translate-y-1 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-xl">Recent Activity</CardTitle>
+                <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
                 <CardDescription className="text-sm">Live tracking across all AI platforms.</CardDescription>
               </CardHeader>
-              <CardContent className="p-0 px-6 pb-6 divide-y divide-white/8">
+              <CardContent className="p-0 px-6 pb-6 divide-y divide-border">
                 {recentActivity.length === 0 ? (
-                  <p className="text-sm font-sans text-[#9C978C] py-6 text-center">No recent runs found.</p>
+                  <p className="text-sm font-sans text-muted-foreground py-6 text-center">No recent runs found.</p>
                 ) : (
                   recentActivity.map(act => (
-                    <div key={act.id} className="py-3.5 flex items-center gap-4 first:pt-0 last:pb-0">
+                    <div key={act.id} className="py-4 flex items-center gap-4 first:pt-0 last:pb-0">
                       {/* Icon — coral for brand activity, sky blue for competitor/neutral */}
                       <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 border ${
                         act.type === 'brand'
-                          ? 'bg-[#D9714A]/15 text-[#D9714A] border-[#D9714A]/25'
-                          : 'bg-[#3FA9E0]/10 text-[#3FA9E0] border-[#3FA9E0]/20'
+                          ? 'bg-coral/10 text-coral border-coral/20'
+                          : 'bg-sky/10 text-sky border-sky/20'
                       }`}>
                         {act.type === 'brand' ? (
                           <CheckCircle2 className="h-4 w-4 stroke-[1.5]" />
@@ -451,14 +455,14 @@ export default async function Dashboard() {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-sans font-medium text-[#F5F1EA] truncate">{act.label}</span>
-                          <span className="text-xs font-sans text-[#9C978C] shrink-0 ml-3">{timeAgo(act.time)}</span>
+                        <div className="flex items-center justify-between mb-0.5">
+                          <span className="text-sm font-sans font-medium text-foreground truncate">{act.label}</span>
+                          <span className="text-xs font-sans text-muted-foreground shrink-0 ml-3">{timeAgo(act.time)}</span>
                         </div>
                         <span className={`text-xs font-sans capitalize ${
-                          act.sentiment === 'positive' ? 'text-[#D9714A]'
-                            : act.sentiment === 'negative' ? 'text-red-400'
-                            : 'text-[#9C978C]'
+                          act.sentiment === 'positive' ? 'text-emerald'
+                            : act.sentiment === 'negative' ? 'text-rose'
+                            : 'text-muted-foreground'
                         }`}>
                           {act.sentiment} sentiment
                         </span>
@@ -467,30 +471,30 @@ export default async function Dashboard() {
                   ))
                 )}
               </CardContent>
-            </Card>
+              </Card>
 
             {/* Right (5): Actions panel — primary / secondary / tertiary */}
-            <Card delay={0.35} className="lg:col-span-5">
+            <Card delay={0.35} className="lg:col-span-5 hover:-translate-y-1 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-xl">Actions</CardTitle>
+                <CardTitle className="text-lg font-semibold">Actions</CardTitle>
                 <CardDescription className="text-sm">Recommended workspace operations.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {/* One primary per page — coral */}
+                {/* One primary per page */}
                 <Button className="w-full justify-center" variant="primary">
-                  <a href="/prompts">Run All Prompts</a>
+                  <a href="/prompts" className="w-full">Run All Prompts</a>
                 </Button>
-                {/* Secondary — sky blue outline */}
+                {/* Secondary */}
                 <Button className="w-full justify-center" variant="secondary">
-                  <a href="/mentions">Review Mentions</a>
+                  <a href="/mentions" className="w-full">Review Mentions</a>
                 </Button>
-                {/* Tertiary — neutral white outline */}
+                {/* Tertiary */}
                 <Button className="w-full justify-center" variant="tertiary">
-                  <a href="/seed">Seed More Data</a>
+                  <a href="/seed" className="w-full">Seed More Data</a>
                 </Button>
               </CardContent>
-            </Card>
-          </div>
+              </Card>
+          </MotionWrapper>
         </>
       )}
     </div>

@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { runAuditAction } from './actions';
 import type { CriterionResult } from '@/lib/audit/criteria';
-import { CheckCircle2, XCircle, Loader2, Globe, Clock } from 'lucide-react';
+import { CheckCircle2, XCircle, Globe, Clock } from 'lucide-react';
+import { useFeedback } from '@/hooks/useFeedback';
+import { FEEDBACK_DURATIONS, SPRING_CONFIGS } from '@/lib/feedback';
 
 interface HistoryItem {
   id: string;
@@ -20,7 +23,7 @@ interface AuditClientProps {
 
 function ScoreBadge({ score, total = 15 }: { score: number; total?: number }) {
   const pct = Math.round((score / total) * 100);
-  const color = pct >= 80 ? '#D9714A' : pct >= 50 ? '#3FA9E0' : '#9C978C';
+  const color = pct >= 80 ? 'var(--accent-primary)' : pct >= 50 ? 'var(--accent-blue)' : 'var(--accent-neutral)';
   return (
     <div className="flex items-center gap-3">
       <div
@@ -30,13 +33,13 @@ function ScoreBadge({ score, total = 15 }: { score: number; total?: number }) {
           borderRadius: '50%',
         }}
       >
-        <div className="absolute inset-2 rounded-full bg-[#1C1917] flex items-center justify-center">
-          <span className="text-xl font-sans font-bold text-[#F5F1EA]">{score}</span>
+        <div className="absolute inset-2 rounded-full bg-card flex items-center justify-center">
+          <span className="text-xl font-sans font-bold text-foreground">{score}</span>
         </div>
       </div>
       <div>
-        <p className="text-3xl font-serif font-medium text-[#F5F1EA]">{score} / {total}</p>
-        <p className="text-sm font-sans text-[#9C978C]">
+        <p className="text-3xl font-serif font-medium tracking-tight text-foreground">{score} / {total}</p>
+        <p className="text-sm font-sans text-muted-foreground">
           {pct >= 80 ? 'Excellent AI visibility' : pct >= 50 ? 'Moderate AI readiness' : 'Needs improvement'}
         </p>
       </div>
@@ -44,22 +47,27 @@ function ScoreBadge({ score, total = 15 }: { score: number; total?: number }) {
   );
 }
 
-function CriterionRow({ result }: { result: CriterionResult }) {
+function CriterionRow({ result, index }: { result: CriterionResult; index: number }) {
   return (
-    <div className={`flex items-start gap-3 py-3.5 border-b border-white/8 last:border-0`}>
-      <div className={`mt-0.5 shrink-0 ${result.passed ? 'text-[#D9714A]' : 'text-[#3FA9E0]'}`}>
+    <motion.div
+      className={`flex items-start gap-3 py-4 border-b border-border last:border-0`}
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ ...SPRING_CONFIGS.gentle, delay: index * 0.03 }}
+    >
+      <div className={`mt-0.5 shrink-0 ${result.passed ? 'text-emerald' : 'text-rose'}`}>
         {result.passed
           ? <CheckCircle2 className="h-5 w-5" />
           : <XCircle className="h-5 w-5" />}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-sans font-medium text-[#F5F1EA]">{result.label}</p>
-        <p className="text-xs font-sans text-[#9C978C] mt-0.5">{result.explanation}</p>
+        <p className="text-sm font-sans font-medium text-foreground">{result.label}</p>
+        <p className="text-xs font-sans text-muted-foreground mt-0.5">{result.explanation}</p>
       </div>
-      <span className={`text-[11px] font-sans font-semibold uppercase tracking-wide shrink-0 mt-0.5 ${result.passed ? 'text-[#D9714A]' : 'text-[#9C978C]'}`}>
+      <span className={`text-[11px] font-sans font-semibold uppercase tracking-wide shrink-0 mt-0.5 ${result.passed ? 'text-emerald' : 'text-muted-foreground'}`}>
         {result.passed ? 'Pass' : 'Fail'}
       </span>
-    </div>
+    </motion.div>
   );
 }
 
@@ -80,13 +88,34 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
   const [error, setError] = useState('');
   const [history, setHistory] = useState(initialHistory);
   const [isPending, startTransition] = useTransition();
+  const [revealedCount, setRevealedCount] = useState(0); // staggered reveal
+  const { trigger } = useFeedback();
+
+  // Tick revealed criteria one at a time when results arrive
+  useEffect(() => {
+    if (!results) { setRevealedCount(0); return; }
+    setRevealedCount(0);
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setRevealedCount(i);
+      if (i >= results.length) {
+        clearInterval(interval);
+        trigger('success'); // pulse on final item
+      }
+    }, FEEDBACK_DURATIONS.criterionTick);
+    return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]);
 
   const handleRun = () => {
     setError('');
+    trigger('tap'); // tap feedback — does not change what runAuditAction does
     startTransition(async () => {
       const res = await runAuditAction(url);
       if (!res.success) {
         setError(res.error ?? 'Unknown error');
+        trigger('error'); // error feedback
         return;
       }
       setResults(res.results ?? []);
@@ -109,23 +138,23 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
   return (
     <div className="space-y-8">
       {/* URL Input */}
-      <div className="bg-[#1C1917] border border-white/8 rounded-2xl p-6 space-y-4">
+      <div className="bg-card border border-border rounded-2xl p-7 space-y-5 shadow-sm">
         <div>
-          <label className="block text-sm font-sans font-medium text-[#F5F1EA] mb-1">Website URL to audit</label>
-          <p className="text-xs font-sans text-[#9C978C]">
+          <label className="block text-sm font-sans font-medium text-foreground mb-1">Website URL to audit</label>
+          <p className="text-xs font-sans text-muted-foreground">
             We&apos;ll check your page against 15 AI-readiness criteria — no JS execution, raw HTML only.
           </p>
         </div>
         <div className="flex gap-3">
-          <div className="flex-1 flex items-center bg-[#141210] border border-white/8 rounded-xl px-4 gap-2 focus-within:border-[#D9714A]/50 transition-colors">
-            <Globe className="h-4 w-4 text-[#9C978C] shrink-0" />
+          <div className="flex-1 flex items-center bg-background border border-border rounded-xl px-4 gap-2 focus-within:border-coral/50 focus-within:ring-1 focus-within:ring-coral/50 transition-all shadow-sm">
+            <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
             <input
               type="url"
               value={url}
               onChange={e => setUrl(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !isPending && handleRun()}
               placeholder="https://yoursite.com"
-              className="flex-1 bg-transparent py-3 text-sm font-sans text-[#F5F1EA] placeholder:text-[#9C978C]/50 focus:outline-none"
+              className="flex-1 bg-transparent py-3 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
             />
           </div>
           <Button
@@ -135,7 +164,8 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
           >
             {isPending ? (
               <span className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" /> Running…
+                <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin inline-block" />
+                Running…
               </span>
             ) : 'Run Audit'}
           </Button>
@@ -149,11 +179,16 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
 
       {/* Results */}
       {isPending && (
-        <div className="bg-[#1C1917] border border-white/8 rounded-2xl p-8 flex flex-col items-center gap-4 text-center">
-          <Loader2 className="h-10 w-10 text-[#D9714A] animate-spin" />
+        <div className="bg-card border border-border border-coral/20 rounded-2xl p-8 flex flex-col items-center gap-4 text-center shadow-glow">
+          <div className="relative">
+            <div className="h-12 w-12 rounded-full border-2 border-coral/30 border-t-coral animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-3 w-3 rounded-full bg-coral/60 animate-pulse" />
+            </div>
+          </div>
           <div>
-            <p className="text-base font-serif font-medium text-[#F5F1EA]">Analysing your page…</p>
-            <p className="text-sm font-sans text-[#9C978C] mt-1">
+            <p className="text-lg font-serif font-medium tracking-tight text-foreground">Analysing your page…</p>
+            <p className="text-sm font-sans text-muted-foreground mt-1">
               Fetching HTML, robots.txt, sitemap.xml, and llms.txt concurrently
             </p>
           </div>
@@ -161,12 +196,12 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
       )}
 
       {results && score !== null && !isPending && (
-        <div className="bg-[#1C1917] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           {/* Score header */}
-          <div className="p-6 border-b border-white/8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-7 border-b border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <ScoreBadge score={score} />
-              <div className="flex items-center gap-2 mt-3 text-xs font-sans text-[#9C978C]">
+              <div className="flex items-center gap-2 mt-4 text-xs font-sans text-muted-foreground">
                 <Globe className="h-3.5 w-3.5" />
                 <span className="truncate max-w-xs">{auditUrl}</span>
                 {loadMs !== null && (
@@ -179,21 +214,35 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
             </div>
             <div className="flex gap-6 text-center shrink-0">
               <div>
-                <p className="text-2xl font-sans font-bold text-[#D9714A]">{passed}</p>
-                <p className="text-xs font-sans text-[#9C978C]">passed</p>
+                <p className="text-3xl font-sans font-bold text-coral">{passed}</p>
+                <p className="text-xs font-sans text-muted-foreground font-medium uppercase tracking-wider mt-1">passed</p>
               </div>
               <div>
-                <p className="text-2xl font-sans font-bold text-[#3FA9E0]">{failed}</p>
-                <p className="text-xs font-sans text-[#9C978C]">failed</p>
+                <p className="text-3xl font-sans font-bold text-sky">{failed}</p>
+                <p className="text-xs font-sans text-muted-foreground font-medium uppercase tracking-wider mt-1">failed</p>
               </div>
             </div>
           </div>
 
-          {/* Checklist */}
-          <div className="px-6 divide-y divide-white/4">
-            {/* Failed first */}
-            {results.filter(r => !r.passed).map(r => <CriterionRow key={r.id} result={r} />)}
-            {results.filter(r => r.passed).map(r => <CriterionRow key={r.id} result={r} />)}
+          {/* Checklist — items reveal one at a time via revealedCount */}
+          <div className="px-7">
+            <AnimatePresence>
+              {/* Failed first, then passed */}
+              {[...results.filter(r => !r.passed), ...results.filter(r => r.passed)]
+                .slice(0, revealedCount)
+                .map((r, idx) => <CriterionRow key={r.id} result={r} index={idx} />)}
+            </AnimatePresence>
+            {/* Placeholder chips for items not yet revealed */}
+            {revealedCount < results.length && (
+              <div className="space-y-0">
+                {Array.from({ length: Math.min(3, results.length - revealedCount) }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-3 py-4 border-b border-border">
+                    <div className="h-5 w-5 rounded-full bg-white/5 animate-pulse" />
+                    <div className="h-3 flex-1 rounded-full bg-white/5 animate-pulse" />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -201,22 +250,29 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
       {/* Audit History */}
       {history.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-serif font-medium text-[#F5F1EA]">Recent Audits</h3>
-          <div className="bg-[#1C1917] border border-white/8 rounded-2xl divide-y divide-white/8">
-            {history.map(item => (
-              <div key={item.id} className="flex items-center justify-between px-5 py-3.5">
-                <div className="flex items-center gap-3 min-w-0">
-                  <Globe className="h-4 w-4 text-[#9C978C] shrink-0" />
-                  <span className="text-sm font-sans text-[#F5F1EA] truncate max-w-xs">{item.url}</span>
+          <h3 className="text-lg font-serif font-medium tracking-tight text-foreground">Recent Audits</h3>
+          <div className="bg-card border border-border rounded-2xl divide-y divide-border shadow-sm">
+            {history.map(item => {
+              const pct = Math.round((item.score / 15) * 100);
+              return (
+                <div key={item.id} className="flex items-center justify-between px-5 py-4 hover:bg-surface-2 transition-colors">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <span className="text-sm font-sans font-medium text-foreground truncate max-w-xs">{item.url}</span>
+                  </div>
+                  <div className="flex items-center gap-4 shrink-0">
+                    <span className={`text-[11px] font-sans font-bold px-2.5 py-1 rounded-full border ${
+                      pct >= 80
+                        ? 'bg-emerald/10 text-emerald border-emerald/25'
+                        : pct >= 50
+                        ? 'bg-sky/10 text-sky border-sky/25'
+                        : 'bg-rose/10 text-rose border-rose/25'
+                    }`}>{item.score}/15</span>
+                    <span className="text-xs font-sans text-muted-foreground font-medium">{timeAgo(item.created_at)}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-4 shrink-0">
-                  <span className={`text-sm font-sans font-semibold ${
-                    item.score >= 12 ? 'text-[#D9714A]' : item.score >= 8 ? 'text-[#3FA9E0]' : 'text-[#9C978C]'
-                  }`}>{item.score}/15</span>
-                  <span className="text-xs font-sans text-[#9C978C]">{timeAgo(item.created_at)}</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
