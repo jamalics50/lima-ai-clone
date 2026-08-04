@@ -8,6 +8,7 @@ import { completeOnboarding } from './actions';
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Step 1 State
   const [brandName, setBrandName] = useState('');
@@ -60,6 +61,7 @@ export default function OnboardingPage() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    setErrorMsg('');
     try {
       await completeOnboarding({
         brandName,
@@ -68,8 +70,9 @@ export default function OnboardingPage() {
         competitors: competitors.filter(c => c.name && c.url),
         prompts: selectedPrompts,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      setErrorMsg(error?.message || String(error));
       setIsLoading(false);
     }
   };
@@ -219,6 +222,12 @@ export default function OnboardingPage() {
               </div>
             ))}
           </div>
+
+          {errorMsg && (
+            <div className="p-3 text-sm font-sans text-red-400 bg-red-400/10 border border-red-400/30 rounded-xl">
+              Error: {errorMsg}
+            </div>
+          )}
 
           <div className="pt-4 flex justify-between">
             <Button variant="tertiary" onClick={() => setStep(2)}>Back</Button>
