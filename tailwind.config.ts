@@ -58,6 +58,8 @@ const config: Config = {
         md: "var(--shadow-card)",
         lg: "var(--shadow-card)",
         glow: "var(--shadow-glow-accent)",
+        soft: "var(--shadow-soft)",
+        float: "var(--shadow-float)",
       }
     },
   },

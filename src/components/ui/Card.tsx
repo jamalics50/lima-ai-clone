@@ -12,7 +12,7 @@ export function Card({ className = '', delay = 0, style, ...props }: CardProps) 
 
   return (
     <div 
-      className={`rounded-lg border border-border bg-card text-card-foreground shadow-sm animate-card-mount transition-all duration-[180ms] ${className}`} 
+      className={`rounded-3xl border border-black/5 bg-card text-card-foreground shadow-soft animate-card-mount transition-all duration-[240ms] ${className}`} 
       style={mountStyle}
       {...props} 
     />
