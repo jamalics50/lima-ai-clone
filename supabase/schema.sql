@@ -32,6 +32,11 @@ CREATE POLICY "Users can view their own workspaces" ON public.workspaces
         )
     );
 
+DROP POLICY IF EXISTS "Users can create workspaces" ON public.workspaces;
+CREATE POLICY "Users can create workspaces" ON public.workspaces
+    FOR INSERT WITH CHECK (true);
+
+
 -- 5. RLS Policies for workspace_members
 -- Users can view members of their own workspaces
 DROP POLICY IF EXISTS "Users can view members of their workspaces" ON public.workspace_members;
@@ -43,6 +48,10 @@ CREATE POLICY "Users can view members of their workspaces" ON public.workspace_m
             AND wm.user_id = auth.uid()
         )
     );
+
+DROP POLICY IF EXISTS "Users can insert themselves into workspaces" ON public.workspace_members;
+CREATE POLICY "Users can insert themselves into workspaces" ON public.workspace_members
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- 6. Trigger to auto-create a workspace for new users
 CREATE OR REPLACE FUNCTION public.handle_new_user()
