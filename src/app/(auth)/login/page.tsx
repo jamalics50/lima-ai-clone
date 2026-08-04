@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { FloatingHeader } from '@/app/(app)/FloatingHeader';
 import { PasswordInput } from './PasswordInput';
+import { HashErrorNotice } from './HashErrorNotice';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -171,6 +172,9 @@ export default async function LoginPage({
                 </Button>
               </div>
             </form>
+
+            {/* Client-side hash fragment error notice */}
+            <HashErrorNotice />
 
             {/* Status / Message Display */}
             {message && (
