@@ -155,7 +155,7 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           {/* Rows */}
           <div className="divide-y divide-border">
             {rows.map(row => (
-              <div key={row.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 px-5 py-4 hover:bg-surface-2 transition-colors">
+              <div key={row.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 px-5 py-4 hover:bg-zinc-50/80 transition-colors">
                 {/* Date */}
                 <div className="sm:col-span-2 flex items-center">
                   <span className="text-xs font-sans text-muted-foreground font-medium">{timeAgo(row.createdAt)}</span>

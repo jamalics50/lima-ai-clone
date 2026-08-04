@@ -58,7 +58,7 @@ export default async function AuditPage() {
         ].map(c => (
           <div
             key={c}
-            className="text-xs font-sans text-muted-foreground bg-white/5 border border-border shadow-sm rounded-xl px-3 py-2 flex items-center gap-2"
+            className="text-xs font-sans text-muted-foreground bg-black/5 border border-border shadow-sm rounded-xl px-3 py-2 flex items-center gap-2"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-sky shrink-0" />
             {c}

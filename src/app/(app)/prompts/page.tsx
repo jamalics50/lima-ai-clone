@@ -131,7 +131,7 @@ export default async function PromptsPage() {
           {/* Table-style run log — different rhythm from card grid */}
           <div className="divide-y divide-border">
             {recentRuns.map((run) => (
-              <div key={run.id} className="flex items-center justify-between px-6 py-4 hover:bg-white/5 transition-colors">
+              <div key={run.id} className="flex items-center justify-between px-6 py-4 hover:bg-zinc-50/80 transition-colors">
                 <div className="flex items-center gap-4">
                   {/* Coral dot = brand signal / run activity */}
                   <div className="h-2 w-2 rounded-full bg-coral shrink-0" />

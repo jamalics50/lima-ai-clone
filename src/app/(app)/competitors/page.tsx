@@ -147,7 +147,7 @@ export default function CompetitorsPage() {
               {competitorsMatrix.map((row, idx) => (
                 <tr
                   key={idx}
-                  className={row.isUser ? 'bg-coral/5 border-l-2 border-l-coral' : 'hover:bg-surface-2 transition-colors'}
+                  className={row.isUser ? 'bg-coral/5 border-l-2 border-l-coral' : 'hover:bg-zinc-50/80 transition-colors'}
                 >
                   <td className="py-4 px-6 font-medium">
                     <div className="flex items-center gap-3">
@@ -169,7 +169,7 @@ export default function CompetitorsPage() {
                     <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap ${
                       row.isUser
                         ? 'bg-coral/10 text-coral border-coral/20'
-                        : 'bg-white/5 text-muted-foreground border-border'
+                        : 'bg-black/5 text-muted-foreground border-border'
                     }`}>
                       {row.status}
                     </span>

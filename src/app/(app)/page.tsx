@@ -398,7 +398,7 @@ export default async function Dashboard() {
                   <Lightbulb className="h-5 w-5 text-coral" />
                   Insights
                 </h3>
-                <span className="text-xs font-sans text-muted-foreground bg-white/5 px-3 py-1 rounded-full border border-border">
+                <span className="text-xs font-sans text-muted-foreground bg-black/5 px-3 py-1 rounded-full border border-border">
                   Auto-generated · updated daily
                 </span>
               </div>
@@ -420,7 +420,7 @@ export default async function Dashboard() {
                           ? 'bg-coral/10 text-coral border-coral/20'
                           : item.type === 'opportunity'
                           ? 'bg-sky/10 text-sky border-sky/20'
-                          : 'bg-white/5 text-muted-foreground border-border'
+                          : 'bg-black/5 text-muted-foreground border-border'
                       }`}>
                         {item.type === 'warning'
                           ? <AlertTriangle className="h-4 w-4 stroke-[1.5]" />

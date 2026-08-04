@@ -237,8 +237,8 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
               <div className="space-y-0">
                 {Array.from({ length: Math.min(3, results.length - revealedCount) }).map((_, i) => (
                   <div key={i} className="flex items-center gap-3 py-4 border-b border-border">
-                    <div className="h-5 w-5 rounded-full bg-white/5 animate-pulse" />
-                    <div className="h-3 flex-1 rounded-full bg-white/5 animate-pulse" />
+                    <div className="h-5 w-5 rounded-full bg-black/5 animate-pulse" />
+                    <div className="h-3 flex-1 rounded-full bg-black/5 animate-pulse" />
                   </div>
                 ))}
               </div>
