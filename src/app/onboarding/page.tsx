@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { completeOnboarding } from './actions';
+import { useRouter } from 'next/navigation';
 
 export default function OnboardingPage() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -70,6 +72,7 @@ export default function OnboardingPage() {
         competitors: competitors.filter(c => c.name && c.url),
         prompts: selectedPrompts,
       });
+      router.push('/');
     } catch (error) {
       console.error(error);
       const err = error as Error;

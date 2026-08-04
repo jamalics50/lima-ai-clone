@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
+
 
 export async function completeOnboarding(formData: {
   brandName: string;
@@ -84,5 +84,5 @@ export async function completeOnboarding(formData: {
     if (promptsError) throw promptsError;
   }
 
-  redirect('/');
+  return { success: true };
 }
