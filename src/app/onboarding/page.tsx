@@ -65,14 +65,20 @@ export default function OnboardingPage() {
     setIsLoading(true);
     setErrorMsg('');
     try {
-      await completeOnboarding({
+      const result = await completeOnboarding({
         brandName,
         websiteUrl,
         category,
         competitors: competitors.filter(c => c.name && c.url),
         prompts: selectedPrompts,
       });
-      router.push('/');
+      
+      if (result.error) {
+        setErrorMsg(result.error);
+        setIsLoading(false);
+      } else {
+        router.push('/');
+      }
     } catch (error) {
       console.error(error);
       const err = error as Error;

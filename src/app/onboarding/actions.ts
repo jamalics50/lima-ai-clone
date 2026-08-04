@@ -14,7 +14,7 @@ export async function completeOnboarding(formData: {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('Not authenticated');
+    return { error: 'Not authenticated' };
   }
 
   // Get user's first workspace
@@ -34,14 +34,14 @@ export async function completeOnboarding(formData: {
       .select('id')
       .single();
 
-    if (wsError) throw wsError;
+    if (wsError) return { error: `Workspace creation failed: ${wsError.message}` };
     workspaceId = newWs.id;
 
     const { error: wmError } = await supabase
       .from('workspace_members')
       .insert({ workspace_id: workspaceId, user_id: user.id, role: 'owner' });
 
-    if (wmError) throw wmError;
+    if (wmError) return { error: `Workspace member creation failed: ${wmError.message}` };
   }
 
   // 1. Insert Brand
@@ -55,7 +55,7 @@ export async function completeOnboarding(formData: {
     .select('id')
     .single();
 
-  if (brandError) throw brandError;
+  if (brandError) return { error: `Brand creation failed: ${brandError.message}` };
 
   // 2. Insert Competitors
   if (formData.competitors.length > 0) {
@@ -68,7 +68,7 @@ export async function completeOnboarding(formData: {
           website_url: c.url,
         }))
       );
-    if (compError) throw compError;
+    if (compError) return { error: `Competitor creation failed: ${compError.message}` };
   }
 
   // 3. Insert Prompts
@@ -81,7 +81,7 @@ export async function completeOnboarding(formData: {
           text: p,
         }))
       );
-    if (promptsError) throw promptsError;
+    if (promptsError) return { error: `Prompts creation failed: ${promptsError.message}` };
   }
 
   return { success: true };
