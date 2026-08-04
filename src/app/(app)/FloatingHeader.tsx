@@ -45,8 +45,8 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
       <div 
         className={`pointer-events-auto flex items-center justify-between transition-all duration-300 w-full max-w-5xl rounded-[32px] border border-black/5 ${
           isScrolled 
-            ? 'h-14 px-6 bg-white/95 backdrop-blur-xl shadow-soft scale-[0.98] -translate-y-1'
-            : 'h-16 px-8 bg-white/70 backdrop-blur-lg shadow-float scale-100'
+            ? 'h-14 px-6 bg-white/80 backdrop-blur-[20px] backdrop-saturate-[1.4] shadow-soft scale-[0.98] -translate-y-1'
+            : 'h-16 px-8 bg-white/70 backdrop-blur-[16px] backdrop-saturate-[1.3] shadow-float scale-100'
         }`}
       >
         {/* Left: Brand / Workspace */}
@@ -118,11 +118,11 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                       onClick={() => setIsDropdownOpen(false)}
                     />
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-3 w-56 bg-white rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                      transition={SPRING_CONFIGS.modal}
+                      className="absolute right-0 top-full mt-3 w-56 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
                     >
                       <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-foreground hover:bg-black/5 transition-colors">
                         <Settings className="h-4 w-4 text-muted-foreground" />

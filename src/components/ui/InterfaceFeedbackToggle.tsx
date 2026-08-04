@@ -37,8 +37,8 @@ export function InterfaceFeedbackToggle() {
         role="switch"
         aria-checked={enabled}
         onClick={handleToggle}
-        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 ${
-          enabled ? 'bg-coral' : 'bg-white/10'
+        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 ${
+          enabled ? 'bg-coral' : 'bg-black/15'
         }`}
       >
         <motion.span

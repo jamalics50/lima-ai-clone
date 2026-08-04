@@ -60,7 +60,7 @@ export function CircularGauge({
           strokeDasharray={circumference}
           strokeDashoffset={currentOffset}
           style={{
-            transition: `stroke-dashoffset 600ms var(--ease-primary)`,
+            transition: `stroke-dashoffset 600ms cubic-bezier(0.34, 1.4, 0.64, 1)`,
           }}
           strokeLinecap="round"
         />

@@ -2,6 +2,7 @@ import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { FloatingHeader } from './FloatingHeader';
+import { AmbientBackground } from '@/components/ui/AmbientBackground';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -39,12 +40,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const email = user.email || '';
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#fafafa] text-foreground relative">
-      {/* Soft floating clouds ambient background */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden mix-blend-multiply opacity-50" aria-hidden="true">
-        <div className="absolute top-[-10%] left-[20%] w-[800px] h-[800px] rounded-full blur-[120px] bg-coral/5" />
-        <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] rounded-full blur-[100px] bg-sky/5" />
-      </div>
+    <div className="flex h-screen overflow-hidden bg-page text-foreground relative">
+      {/* Living Ambient Background */}
+      <AmbientBackground />
 
       {/* Main content — sits on z-10 */}
       <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
