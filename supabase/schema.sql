@@ -201,3 +201,29 @@ CREATE POLICY "Users can access their workspace citations" ON public.citations
             AND public.user_has_workspace_access(p.workspace_id)
         )
     );
+
+-- 13. Audits table (site audit results)
+CREATE TABLE IF NOT EXISTS public.audits (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    workspace_id UUID REFERENCES public.workspaces(id) ON DELETE CASCADE,
+    url TEXT NOT NULL,
+    score INT NOT NULL,
+    results JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+ALTER TABLE public.audits ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can access their workspace audits" ON public.audits;
+CREATE POLICY "Users can access their workspace audits" ON public.audits
+    FOR ALL USING (public.user_has_workspace_access(workspace_id));
+
+-- 14. Insights table (template-based recommendations)
+CREATE TABLE IF NOT EXISTS public.insights (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    workspace_id UUID REFERENCES public.workspaces(id) ON DELETE CASCADE,
+    items JSONB NOT NULL,
+    generated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+ALTER TABLE public.insights ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can access their workspace insights" ON public.insights;
+CREATE POLICY "Users can access their workspace insights" ON public.insights
+    FOR ALL USING (public.user_has_workspace_access(workspace_id));

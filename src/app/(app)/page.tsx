@@ -5,7 +5,8 @@ import { Sparkline } from '@/components/ui/Sparkline';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Layers, TrendingUp, CheckCircle2, MessageSquare, AlertCircle } from 'lucide-react';
+import { Layers, TrendingUp, CheckCircle2, MessageSquare, AlertCircle, Lightbulb, AlertTriangle, Info } from 'lucide-react';
+import { getOrGenerateInsights } from '@/app/(app)/insights/actions';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -197,6 +198,9 @@ export default async function Dashboard() {
 
   const trackedPlatforms = uniquePlatforms.size || 5;
 
+  // ── Insights ──────────────────────────────────────────────────────────────
+  const { items: insightItems } = await getOrGenerateInsights();
+
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-8 max-w-6xl mx-auto py-2">
@@ -370,7 +374,55 @@ export default async function Dashboard() {
             </div>
           )}
 
-          {/* ── 4. BOTTOM ROW: asymmetric 7/5 ────────────────────────────── */}
+          {/* ── 4. INSIGHTS PANEL ─────────────────────────────────────────── */}
+          {insightItems.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-serif font-medium text-[#F5F1EA] flex items-center gap-2">
+                  <Lightbulb className="h-5 w-5 text-[#D9714A]" />
+                  Insights
+                </h3>
+                <span className="text-xs font-sans text-[#9C978C] bg-white/5 px-3 py-1 rounded-full border border-white/8">
+                  Auto-generated · updated daily
+                </span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {insightItems.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`bg-[#1C1917] rounded-2xl border p-5 space-y-2 ${
+                      item.type === 'warning'
+                        ? 'border-[#D9714A]/25'
+                        : item.type === 'opportunity'
+                        ? 'border-[#3FA9E0]/25'
+                        : 'border-white/8'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 border ${
+                        item.type === 'warning'
+                          ? 'bg-[#D9714A]/15 text-[#D9714A] border-[#D9714A]/25'
+                          : item.type === 'opportunity'
+                          ? 'bg-[#3FA9E0]/10 text-[#3FA9E0] border-[#3FA9E0]/20'
+                          : 'bg-white/5 text-[#9C978C] border-white/8'
+                      }`}>
+                        {item.type === 'warning'
+                          ? <AlertTriangle className="h-4 w-4 stroke-[1.5]" />
+                          : item.type === 'opportunity'
+                          ? <Lightbulb className="h-4 w-4 stroke-[1.5]" />
+                          : <Info className="h-4 w-4 stroke-[1.5]" />
+                        }
+                      </div>
+                      <p className="text-sm font-sans font-semibold text-[#F5F1EA] leading-snug">{item.headline}</p>
+                    </div>
+                    <p className="text-xs font-sans text-[#9C978C] leading-relaxed pl-11">{item.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── 5. BOTTOM ROW: asymmetric 7/5 ────────────────────────────── */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left (7): Recent Activity timeline */}
             <Card delay={0.3} className="lg:col-span-7">
