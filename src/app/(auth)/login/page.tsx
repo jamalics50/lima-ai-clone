@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { FloatingHeader } from '@/app/(app)/FloatingHeader';
 import { PasswordInput } from './PasswordInput';
+import { ChipRow } from '@/components/ui/ChipRow';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -153,8 +154,23 @@ export default async function LoginPage({
         </Card>
         
         {/* Footer links */}
-        <div className="mt-8 text-center text-xs text-muted-foreground space-y-2 font-sans">
+        <div className="mt-8 text-center text-xs text-muted-foreground space-y-2 font-sans mb-12">
           <p>By logging in, you agree to our Terms of Service</p>
+        </div>
+
+        {/* Feature Carousel (Optional Nice-to-Have from Spec) */}
+        <div className="w-screen max-w-full overflow-hidden mt-8 opacity-60">
+          <ChipRow 
+            items={[
+              "Monitor ChatGPT",
+              "Track brand mentions",
+              "Measure Share of Voice",
+              "Analyze Claude 3.5 responses",
+              "Identify sentiment trends",
+              "Google AI Overviews tracking",
+              "Real-time alerts"
+            ]}
+          />
         </div>
       </div>
     </div>
