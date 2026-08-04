@@ -1,17 +1,7 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import { Home, MessageSquare, Users, BookOpen, FileText, Settings } from 'lucide-react';
 import { SidebarNav } from './SidebarNav';
-
-const navigation = [
-  { name: 'Overview', href: '/', icon: Home },
-  { name: 'Mentions', href: '/mentions', icon: MessageSquare },
-  { name: 'Competitors', href: '/competitors', icon: Users },
-  { name: 'Prompts', href: '/prompts', icon: BookOpen },
-  { name: 'Audit', href: '/audit', icon: FileText },
-  { name: 'Settings', href: '/settings', icon: Settings },
-];
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -61,7 +51,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <span className="font-sans font-semibold text-lg tracking-tighter text-foreground">LIMA AI</span>
         </div>
         {/* SidebarNav handles active state, spring pill, and feedback */}
-        <SidebarNav navigation={navigation} />
+        <SidebarNav />
       </aside>
 
       {/* Main content — sits on z-10 so ambient layer shows behind sidebar glass */}

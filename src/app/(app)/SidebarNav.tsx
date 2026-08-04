@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut } from 'lucide-react';
+import { Home, MessageSquare, Users, BookOpen, FileText, Settings, LogOut } from 'lucide-react';
 import { useFeedback } from '@/hooks/useFeedback';
 import { SPRING_CONFIGS } from '@/lib/feedback';
 import type { LucideIcon } from 'lucide-react';
@@ -15,9 +15,14 @@ interface NavItem {
   icon: LucideIcon;
 }
 
-interface SidebarNavProps {
-  navigation: NavItem[];
-}
+const navigation = [
+  { name: 'Overview', href: '/', icon: Home },
+  { name: 'Mentions', href: '/mentions', icon: MessageSquare },
+  { name: 'Competitors', href: '/competitors', icon: Users },
+  { name: 'Prompts', href: '/prompts', icon: BookOpen },
+  { name: 'Audit', href: '/audit', icon: FileText },
+  { name: 'Settings', href: '/settings', icon: Settings },
+];
 
 /**
  * Client-side sidebar nav with:
@@ -25,7 +30,7 @@ interface SidebarNavProps {
  * - Framer Motion layoutId pill that springs to the active item
  * - triggerFeedback('select') on nav item click
  */
-export function SidebarNav({ navigation }: SidebarNavProps) {
+export function SidebarNav() {
   const pathname = usePathname();
   const { trigger } = useFeedback();
 
