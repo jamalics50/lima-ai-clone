@@ -70,9 +70,10 @@ export default function OnboardingPage() {
         competitors: competitors.filter(c => c.name && c.url),
         prompts: selectedPrompts,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      setErrorMsg(error?.message || String(error));
+      const err = error as Error;
+      setErrorMsg(err.message || String(error));
       setIsLoading(false);
     }
   };
