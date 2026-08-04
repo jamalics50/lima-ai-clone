@@ -2,9 +2,10 @@ import React from 'react';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   delay?: number; // Delay in seconds for mount stagger (e.g. 0.1, 0.2)
+  interactive?: boolean; // Whether to apply hover lift and shadow
 }
 
-export function Card({ className = '', delay = 0, style, ...props }: CardProps) {
+export function Card({ className = '', delay = 0, interactive = false, style, ...props }: CardProps) {
   const mountStyle: React.CSSProperties = {
     ...style,
     animationDelay: `${delay}s`,
@@ -12,7 +13,9 @@ export function Card({ className = '', delay = 0, style, ...props }: CardProps) 
 
   return (
     <div 
-      className={`rounded-3xl border border-black/5 bg-card text-card-foreground shadow-soft animate-card-mount transition-all duration-[240ms] ${className}`} 
+      className={`rounded-lg border border-black/5 bg-card text-card-foreground shadow-float transition-all duration-[240ms] ease-out ${
+        interactive ? 'hover:-translate-y-[2px] hover:shadow-float-hover hover:bg-white' : ''
+      } ${className}`} 
       style={mountStyle}
       {...props} 
     />

@@ -229,13 +229,13 @@ export default async function Dashboard() {
           {/* ── 1. HERO ROW (2fr / 1fr) ──────────────────────────────────── */}
           <MotionWrapper delay={0.1} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left (2fr): Featured Visibility card — flagship glow */}
-            <Card delay={0.05} className="lg:col-span-2 flex flex-col justify-between p-7 shadow-glow border-coral/20">
+            <Card delay={0.05} interactive className="lg:col-span-2 flex flex-col justify-between p-7 border-coral/20">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <span className="text-xs font-sans uppercase tracking-widest text-muted-foreground font-semibold">Primary Metric</span>
+                  <span className="text-[10px] font-sans uppercase tracking-widest text-muted-foreground font-bold">Primary Metric</span>
                   <h3 className="text-2xl font-serif font-medium text-foreground tracking-tight mt-1">Visibility Score</h3>
                 </div>
-                <span className="text-xs font-sans text-muted-foreground bg-white/5 px-3 py-1.5 rounded-full border border-border">
+                <span className="text-[11px] font-sans font-semibold text-muted-foreground bg-black/5 px-3 py-1.5 rounded-full border border-black/5">
                   Tracked across {trackedPlatforms} platform{trackedPlatforms !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -274,26 +274,38 @@ export default async function Dashboard() {
 
             {/* Right (1fr): Stack of 2 small cards */}
             <div className="flex flex-col gap-6">
-              {/* Share of Voice — sky blue secondary gauge */}
-              <Card delay={0.15} className="flex-1 p-6 flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-sans text-muted-foreground">Share of Voice</span>
-                  <div className="text-3xl font-serif font-medium text-foreground mt-1">
-                    <AnimatedNumber value={shareOfVoice} suffix="%" delay={150} />
+              {/* Share of Voice — horizontal progress bar pattern */}
+              <Card delay={0.15} interactive className="flex-1 p-6 flex flex-col justify-center gap-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="text-[10px] uppercase font-sans font-bold tracking-wider text-muted-foreground">Share of Voice</span>
+                    <div className="text-3xl font-serif font-medium text-foreground mt-1">
+                      <AnimatedNumber value={shareOfVoice} suffix="%" delay={150} />
+                    </div>
                   </div>
-                  <span className="text-xs font-sans text-muted-foreground mt-1 block">vs all mentions</span>
+                  <div className="bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                    ↑12%
+                  </div>
                 </div>
-                {/* Sky blue — secondary/informational metric only */}
-                <CircularGauge percentage={shareOfVoice} variant="sky-blue" size={64} strokeWidth={6} delay={0.25} />
+                <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden mt-1">
+                  <div className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full" style={{ width: `${shareOfVoice}%` }}></div>
+                </div>
               </Card>
 
-              {/* Total Mentions — plain big number, no gauge */}
-              <Card delay={0.2} className="flex-1 p-6 flex flex-col justify-center">
-                <span className="text-xs font-sans text-muted-foreground">Brand Mentions</span>
-                <div className="text-4xl font-serif font-medium text-foreground tracking-tight mt-1">
-                  <AnimatedNumber value={totalBrandMentions} delay={200} />
+              {/* Total Mentions — plain big number */}
+              <Card delay={0.2} interactive className="flex-1 p-6 flex flex-col justify-center">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="text-[10px] uppercase font-sans font-bold tracking-wider text-muted-foreground">Brand Mentions</span>
+                    <div className="text-4xl font-serif font-medium text-foreground tracking-tight mt-1">
+                      <AnimatedNumber value={totalBrandMentions} delay={200} />
+                    </div>
+                  </div>
+                  <div className="bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                    ↑8%
+                  </div>
                 </div>
-                <span className="text-xs font-sans text-sky mt-2 font-medium">
+                <span className="text-[11px] font-sans text-muted-foreground mt-3 font-medium">
                   Last 30 days
                 </span>
               </Card>

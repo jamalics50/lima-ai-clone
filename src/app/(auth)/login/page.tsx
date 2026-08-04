@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
+import { FloatingHeader } from '@/app/(app)/FloatingHeader';
+import { PasswordInput } from './PasswordInput';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -81,7 +83,9 @@ export default async function LoginPage({
       className="flex min-h-screen items-center justify-center p-4 relative overflow-hidden text-foreground"
       style={{ background: 'var(--gradient-hero)' }}
     >
-      <div className="w-full max-w-[380px] relative z-10 flex flex-col items-center">
+      <FloatingHeader />
+      
+      <div className="w-full max-w-[380px] relative z-10 flex flex-col items-center mt-16">
         {/* Title and subtitle outside the card */}
         <div className="text-center mb-8">
           <div className="mx-auto h-12 w-12 rounded-2xl bg-white shadow-soft flex items-center justify-center mb-6">
@@ -131,13 +135,7 @@ export default async function LoginPage({
               </div>
               <div className="space-y-1.5">
                 <label htmlFor="password" className="text-xs font-sans font-medium text-muted-foreground ml-1">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  className="flex h-12 w-full rounded-xl border border-black/5 bg-zinc-50/50 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
-                />
+                <PasswordInput />
               </div>
               <div className="pt-2">
                 <Button formAction={signIn} variant="primary" className="w-full h-12 rounded-xl text-[15px]">

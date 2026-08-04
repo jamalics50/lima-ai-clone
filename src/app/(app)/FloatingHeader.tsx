@@ -23,7 +23,7 @@ const navigation: NavItem[] = [
   { name: 'Audit', href: '/audit', icon: FileText },
 ];
 
-export function FloatingHeader({ workspaceName, initial, email }: { workspaceName: string, initial: string, email: string }) {
+export function FloatingHeader({ workspaceName, initial, email }: { workspaceName?: string, initial?: string, email?: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
@@ -94,49 +94,57 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
           })}
         </nav>
 
-        {/* Right: User Dropdown */}
+        {/* Right: User Dropdown or Logged Out State */}
         <div className="relative shrink-0 flex items-center">
-          <button 
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 hover:bg-black/5 p-1 pr-3 rounded-full transition-colors"
-          >
-            <div className="h-8 w-8 rounded-full flex items-center justify-center text-sm font-sans font-bold bg-coral text-white shadow-sm">
-              {initial}
-            </div>
-            <span className="text-[13px] font-medium text-foreground hidden sm:block truncate max-w-[120px]">{email}</span>
-            <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
-          </button>
-          
-          <AnimatePresence>
-            {isDropdownOpen && (
-              <>
-                <motion.div 
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsDropdownOpen(false)}
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-3 w-56 bg-white rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
-                >
-                  <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-foreground hover:bg-black/5 transition-colors">
-                    <Settings className="h-4 w-4 text-muted-foreground" />
-                    Settings
-                  </Link>
-                  <div className="h-px w-full bg-black/5 my-1" />
-                  <form action="/auth/signout" method="post">
-                    <button type="submit" className="flex w-full items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-red-600 hover:bg-red-50 transition-colors">
-                      <LogOut className="h-4 w-4" />
-                      Sign out
-                    </button>
-                  </form>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+          {email ? (
+            <>
+              <button 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2 hover:bg-black/5 p-1 pr-3 rounded-full transition-colors"
+              >
+                <div className="h-8 w-8 rounded-full flex items-center justify-center text-sm font-sans font-bold bg-coral text-white shadow-sm">
+                  {initial}
+                </div>
+                <span className="text-[13px] font-medium text-foreground hidden sm:block truncate max-w-[120px]">{email}</span>
+                <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
+              </button>
+              
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <>
+                    <motion.div 
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-40"
+                      onClick={() => setIsDropdownOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-3 w-56 bg-white rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
+                    >
+                      <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-foreground hover:bg-black/5 transition-colors">
+                        <Settings className="h-4 w-4 text-muted-foreground" />
+                        Settings
+                      </Link>
+                      <div className="h-px w-full bg-black/5 my-1" />
+                      <form action="/auth/signout" method="post">
+                        <button type="submit" className="flex w-full items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-red-600 hover:bg-red-50 transition-colors">
+                          <LogOut className="h-4 w-4" />
+                          Sign out
+                        </button>
+                      </form>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </>
+          ) : (
+            <Link href="/login" className="text-sm font-sans font-medium text-foreground hover:text-coral transition-colors px-4">
+              Log in
+            </Link>
+          )}
         </div>
       </div>
     </div>
