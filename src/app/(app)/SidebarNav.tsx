@@ -15,7 +15,7 @@ interface NavItem {
   icon: LucideIcon;
 }
 
-const navigation = [
+const navigation: NavItem[] = [
   { name: 'Overview', href: '/', icon: Home },
   { name: 'Mentions', href: '/mentions', icon: MessageSquare },
   { name: 'Competitors', href: '/competitors', icon: Users },
