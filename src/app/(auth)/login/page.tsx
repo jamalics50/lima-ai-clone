@@ -77,13 +77,10 @@ export default async function LoginPage({
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#fafafa] p-4 relative overflow-hidden text-foreground">
-      {/* Soft warm cloud art background */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[600px] pointer-events-none opacity-50 mix-blend-multiply">
-        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-coral/10 rounded-full blur-[100px]" />
-        <div className="absolute top-[10%] right-[20%] w-[400px] h-[400px] bg-sky/10 rounded-full blur-[90px]" />
-      </div>
-
+    <div 
+      className="flex min-h-screen items-center justify-center p-4 relative overflow-hidden text-foreground"
+      style={{ background: 'var(--gradient-hero)' }}
+    >
       <div className="w-full max-w-[380px] relative z-10 flex flex-col items-center">
         {/* Title and subtitle outside the card */}
         <div className="text-center mb-8">
