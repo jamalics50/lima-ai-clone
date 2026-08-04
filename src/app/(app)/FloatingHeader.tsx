@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, MessageSquare, Users, BookOpen, FileText, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { Home, MessageSquare, Users, BookOpen, FileText, Settings, LogOut, ChevronDown, PlusCircle } from 'lucide-react';
 import { useFeedback } from '@/hooks/useFeedback';
 import { SPRING_CONFIGS } from '@/lib/feedback';
 import type { LucideIcon } from 'lucide-react';
@@ -124,6 +124,10 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                       transition={SPRING_CONFIGS.modal}
                       className="absolute right-0 top-full mt-3 w-56 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
                     >
+                      <Link href="/onboarding" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-coral hover:bg-coral/10 transition-colors">
+                        <PlusCircle className="h-4 w-4 text-coral" />
+                        Monitor New Brand
+                      </Link>
                       <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-foreground hover:bg-black/5 transition-colors">
                         <Settings className="h-4 w-4 text-muted-foreground" />
                         Settings

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { completeOnboarding } from './actions';
 import { useRouter } from 'next/navigation';
+import { MotionWrapper } from '@/components/ui/MotionWrapper';
+import { CheckCircle2, Plus, X, Search, Building2, Globe, Tag } from 'lucide-react';
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -46,7 +48,7 @@ export default function OnboardingPage() {
     return [
       `What are the best ${cat} platforms for enterprise use?`,
       `How does ${brandName || 'this brand'} compare to top ${cat} competitors?`,
-      `Top 5 ${cat} solutions recommended by Reddit.`,
+      `Top 5 ${cat} solutions recommended by Reddit and reviewers.`,
       `What are the pros and cons of using ${brandName || 'this brand'} for ${cat}?`,
     ];
   };
@@ -88,53 +90,70 @@ export default function OnboardingPage() {
   };
 
   return (
-    <Card className="p-8 max-w-xl mx-auto">
+    <Card className="p-8 max-w-2xl mx-auto bg-white shadow-float rounded-[28px] border border-black/5">
+      {/* Progress Step Bar */}
       <div className="mb-8">
-        <div className="flex gap-2 mb-2">
-          <div className={`h-1 flex-1 rounded-full ${step >= 1 ? 'bg-[#D9714A]' : 'bg-white/10'}`} />
-          <div className={`h-1 flex-1 rounded-full ${step >= 2 ? 'bg-[#D9714A]' : 'bg-white/10'}`} />
-          <div className={`h-1 flex-1 rounded-full ${step >= 3 ? 'bg-[#D9714A]' : 'bg-white/10'}`} />
+        <div className="flex gap-2.5 mb-3">
+          <div className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${step >= 1 ? 'bg-coral' : 'bg-black/10'}`} />
+          <div className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${step >= 2 ? 'bg-coral' : 'bg-black/10'}`} />
+          <div className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${step >= 3 ? 'bg-coral' : 'bg-black/10'}`} />
         </div>
-        <p className="text-sm font-sans text-[#9C978C]">Step {step} of 3</p>
+        <p className="text-xs font-sans text-muted-foreground uppercase font-bold tracking-wider">Step {step} of 3</p>
       </div>
 
       {step === 1 && (
-        <div className="space-y-6 animate-card-mount opacity-0" style={{ animationFillMode: 'forwards' }}>
+        <MotionWrapper delay={0} className="space-y-6">
           <div>
-            <h2 className="text-xl font-serif text-[#F5F1EA] mb-2">Tell us about your brand</h2>
-            <p className="text-sm font-sans text-[#9C978C]">Let&apos;s set up your primary tracking subject.</p>
+            <h2 className="text-2xl font-serif text-foreground font-medium tracking-tight mb-1.5 flex items-center gap-2">
+              <Search className="h-6 w-6 text-coral" />
+              Monitor a New Brand
+            </h2>
+            <p className="text-sm font-sans text-muted-foreground">
+              Enter details for the brand you want to track across ChatGPT, Claude, Perplexity &amp; Google AI.
+            </p>
           </div>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-sans font-medium text-[#F5F1EA] mb-1">Brand Name</label>
-              <input
-                type="text"
-                value={brandName}
-                onChange={(e) => setBrandName(e.target.value)}
-                placeholder="e.g. Acme Corp"
-                className="w-full bg-[#141210] border border-white/8 rounded-xl px-4 py-2.5 text-sm font-sans text-[#F5F1EA] placeholder:text-[#9C978C]/50 focus:outline-none focus:border-[#D9714A]/50 transition-colors"
-              />
+              <label className="block text-xs font-sans font-medium text-muted-foreground ml-1 mb-1.5">Brand Name</label>
+              <div className="relative">
+                <Building2 className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={brandName}
+                  onChange={(e) => setBrandName(e.target.value)}
+                  placeholder="e.g. Acme Corp"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
+                />
+              </div>
             </div>
+
             <div>
-              <label className="block text-sm font-sans font-medium text-[#F5F1EA] mb-1">Website URL</label>
-              <input
-                type="url"
-                value={websiteUrl}
-                onChange={(e) => setWebsiteUrl(e.target.value)}
-                placeholder="https://acme.com"
-                className="w-full bg-[#141210] border border-white/8 rounded-xl px-4 py-2.5 text-sm font-sans text-[#F5F1EA] placeholder:text-[#9C978C]/50 focus:outline-none focus:border-[#D9714A]/50 transition-colors"
-              />
+              <label className="block text-xs font-sans font-medium text-muted-foreground ml-1 mb-1.5">Website URL</label>
+              <div className="relative">
+                <Globe className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="url"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  placeholder="https://acme.com"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
+                />
+              </div>
             </div>
+
             <div>
-              <label className="block text-sm font-sans font-medium text-[#F5F1EA] mb-1">Category / Industry</label>
-              <input
-                type="text"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                placeholder="e.g. CRM software, running shoes"
-                className="w-full bg-[#141210] border border-white/8 rounded-xl px-4 py-2.5 text-sm font-sans text-[#F5F1EA] placeholder:text-[#9C978C]/50 focus:outline-none focus:border-[#D9714A]/50 transition-colors"
-              />
+              <label className="block text-xs font-sans font-medium text-muted-foreground ml-1 mb-1.5">Category / Industry</label>
+              <div className="relative">
+                <Tag className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder="e.g. CRM software, running shoes"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
+                />
+              </div>
             </div>
           </div>
 
@@ -143,45 +162,49 @@ export default function OnboardingPage() {
               variant="primary" 
               onClick={() => setStep(2)}
               disabled={!brandName || !websiteUrl}
+              className="h-11 px-6 rounded-xl text-sm"
             >
-              Next Step
+              Next Step →
             </Button>
           </div>
-        </div>
+        </MotionWrapper>
       )}
 
       {step === 2 && (
-        <div className="space-y-6 animate-card-mount opacity-0" style={{ animationFillMode: 'forwards' }}>
+        <MotionWrapper delay={0} className="space-y-6">
           <div>
-            <h2 className="text-xl font-serif text-[#F5F1EA] mb-2">Who are your competitors?</h2>
-            <p className="text-sm font-sans text-[#9C978C]">Add up to 5 competitors to benchmark against.</p>
+            <h2 className="text-2xl font-serif text-foreground font-medium tracking-tight mb-1.5">
+              Who are your key competitors?
+            </h2>
+            <p className="text-sm font-sans text-muted-foreground">Add up to 5 competitors to benchmark against.</p>
           </div>
 
           <div className="space-y-4">
             {competitors.map((comp, idx) => (
-              <div key={idx} className="flex gap-3 items-start">
+              <div key={idx} className="flex gap-3 items-start bg-zinc-50/50 p-4 rounded-xl border border-black/5">
                 <div className="flex-1 space-y-3">
                   <input
                     type="text"
                     value={comp.name}
                     onChange={(e) => handleCompetitorChange(idx, 'name', e.target.value)}
                     placeholder="Competitor Name"
-                    className="w-full bg-[#141210] border border-white/8 rounded-xl px-4 py-2 text-sm font-sans text-[#F5F1EA] focus:outline-none focus:border-[#3FA9E0]/50 transition-colors"
+                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-2 text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 transition-all shadow-sm"
                   />
                   <input
                     type="url"
                     value={comp.url}
                     onChange={(e) => handleCompetitorChange(idx, 'url', e.target.value)}
-                    placeholder="Website URL"
-                    className="w-full bg-[#141210] border border-white/8 rounded-xl px-4 py-2 text-sm font-sans text-[#F5F1EA] focus:outline-none focus:border-[#3FA9E0]/50 transition-colors"
+                    placeholder="Website URL (e.g. https://competitor.com)"
+                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-2 text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 transition-all shadow-sm"
                   />
                 </div>
                 {competitors.length > 1 && (
                   <button 
                     onClick={() => handleRemoveCompetitor(idx)}
-                    className="mt-2 text-[#9C978C] hover:text-[#D9714A] transition-colors"
+                    className="p-1 text-muted-foreground hover:text-coral transition-colors rounded-lg hover:bg-black/5"
+                    title="Remove competitor"
                   >
-                    ×
+                    <X className="h-5 w-5" />
                   </button>
                 )}
               </div>
@@ -191,65 +214,85 @@ export default function OnboardingPage() {
           {competitors.length < 5 && (
             <button 
               onClick={handleAddCompetitor}
-              className="text-sm font-sans text-[#3FA9E0] hover:text-[#3FA9E0]/80 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-sans font-medium text-sky hover:underline"
             >
-              + Add another competitor
+              <Plus className="h-4 w-4" /> Add another competitor
             </button>
           )}
 
-          <div className="pt-4 flex justify-between">
-            <Button variant="tertiary" onClick={() => setStep(1)}>Back</Button>
+          <div className="pt-4 flex justify-between items-center">
+            <Button variant="secondary" onClick={() => setStep(1)} className="h-11 px-5 rounded-xl text-sm">
+              ← Back
+            </Button>
             <Button 
               variant="primary" 
               onClick={() => setStep(3)}
               disabled={!competitors[0].name || !competitors[0].url}
+              className="h-11 px-6 rounded-xl text-sm"
             >
-              Next Step
+              Next Step →
             </Button>
           </div>
-        </div>
+        </MotionWrapper>
       )}
 
       {step === 3 && (
-        <div className="space-y-6 animate-card-mount opacity-0" style={{ animationFillMode: 'forwards' }}>
+        <MotionWrapper delay={0} className="space-y-6">
           <div>
-            <h2 className="text-xl font-serif text-[#F5F1EA] mb-2">Select Prompts to Track</h2>
-            <p className="text-sm font-sans text-[#9C978C]">We&apos;ve generated some template prompts based on your category. Select the ones you want to run.</p>
+            <h2 className="text-2xl font-serif text-foreground font-medium tracking-tight mb-1.5">
+              Select Prompts to Track
+            </h2>
+            <p className="text-sm font-sans text-muted-foreground">
+              We&apos;ve generated template prompts tailored to your category. Select the ones you want to run.
+            </p>
           </div>
 
           <div className="space-y-3">
-            {generatedPrompts.map((prompt, idx) => (
-              <div 
-                key={idx}
-                onClick={() => togglePrompt(prompt)}
-                className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                  selectedPrompts.includes(prompt) 
-                    ? 'border-[#D9714A] bg-[#D9714A]/5' 
-                    : 'border-white/8 hover:border-white/20'
-                }`}
-              >
-                <p className="text-sm font-sans text-[#F5F1EA]">{prompt}</p>
-              </div>
-            ))}
+            {generatedPrompts.map((prompt, idx) => {
+              const isSelected = selectedPrompts.includes(prompt);
+              return (
+                <div 
+                  key={idx}
+                  onClick={() => togglePrompt(prompt)}
+                  className={`p-4 rounded-2xl border cursor-pointer transition-all duration-200 flex items-start gap-3 ${
+                    isSelected 
+                      ? 'border-coral bg-coral/5 shadow-sm' 
+                      : 'border-black/10 bg-white hover:border-black/20'
+                  }`}
+                >
+                  <div className={`h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border ${
+                    isSelected ? 'bg-coral text-white border-coral' : 'border-black/20 bg-white'
+                  }`}>
+                    {isSelected && <CheckCircle2 className="h-3.5 w-3.5 stroke-[2.5]" />}
+                  </div>
+                  <p className={`text-sm font-sans font-medium ${isSelected ? 'text-foreground' : 'text-muted-foreground'}`}>
+                    {prompt}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           {errorMsg && (
-            <div className="p-3 text-sm font-sans text-red-400 bg-red-400/10 border border-red-400/30 rounded-xl">
+            <div className="p-3 text-sm font-sans text-red-600 bg-red-50 border border-red-200 rounded-xl">
               Error: {errorMsg}
             </div>
           )}
 
-          <div className="pt-4 flex justify-between">
-            <Button variant="tertiary" onClick={() => setStep(2)}>Back</Button>
+          <div className="pt-4 flex justify-between items-center">
+            <Button variant="secondary" onClick={() => setStep(2)} className="h-11 px-5 rounded-xl text-sm">
+              ← Back
+            </Button>
             <Button 
               variant="primary" 
               onClick={handleSubmit}
               disabled={selectedPrompts.length === 0 || isLoading}
+              className="h-11 px-6 rounded-xl text-sm"
             >
-              {isLoading ? 'Saving...' : 'Complete Setup'}
+              {isLoading ? 'Saving Brand...' : 'Complete & Start Monitoring'}
             </Button>
           </div>
-        </div>
+        </MotionWrapper>
       )}
     </Card>
   );
