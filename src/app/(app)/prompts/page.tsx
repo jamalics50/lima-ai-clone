@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+
 import { Clock, Layers } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { PromptRow } from './PromptRow';
