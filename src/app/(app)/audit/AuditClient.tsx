@@ -154,7 +154,7 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
               onChange={e => setUrl(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !isPending && handleRun()}
               placeholder="https://yoursite.com"
-              className="flex-1 bg-transparent py-3 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+              className="flex-1 bg-transparent py-3 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/80 focus:outline-none"
             />
           </div>
           <Button

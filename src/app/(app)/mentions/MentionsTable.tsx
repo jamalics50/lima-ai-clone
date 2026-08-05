@@ -32,7 +32,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   'ChatGPT (GPT-4o)': '#10a37f',
   'Claude 3.5 Sonnet': '#d97757',
   'Perplexity Pro': '#20808d',
-  'Grok 2.0': '#a0aec0',
+  'Grok 2.0': '#4a5568',
   'Google AI Overviews': '#4285f4',
 };
 

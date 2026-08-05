@@ -13,7 +13,7 @@ export function PasswordInput() {
         name="password"
         type={showPassword ? 'text' : 'password'}
         required
-        className="flex h-10 w-full rounded-xl border border-black/10 bg-zinc-50/50 px-3.5 py-2 pr-10 text-base lg:text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
+        className="flex h-10 w-full rounded-xl border border-black/10 bg-zinc-50/50 px-3.5 py-2 pr-10 text-base lg:text-sm text-foreground placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
       />
       <button
         type="button"

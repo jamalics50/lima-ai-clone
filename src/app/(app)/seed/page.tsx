@@ -7,7 +7,7 @@ export default function SeedPage() {
     <div className="max-w-lg mx-auto py-8 space-y-6">
       <div>
         <h2 className="text-3xl font-serif font-medium text-[#F5F1EA]">Seed Dashboard Data</h2>
-        <p className="text-sm font-sans text-[#9C978C] mt-1">
+        <p className="text-sm font-sans text-[#D8D4CA] mt-1">
           Populate 30 days of backdated mock data so the dashboard looks like a real, active workspace.
         </p>
       </div>
@@ -19,7 +19,7 @@ export default function SeedPage() {
           </div>
           <div>
             <h3 className="font-serif font-medium text-[#F5F1EA] mb-2">What this generates</h3>
-            <ul className="space-y-1.5 text-sm font-sans text-[#9C978C]">
+            <ul className="space-y-1.5 text-sm font-sans text-[#D8D4CA]">
               <li className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#3FA9E0] shrink-0" />
                 30 days × (your prompts) × 5 AI platforms = hundreds of platform_runs
@@ -40,7 +40,7 @@ export default function SeedPage() {
           </div>
         </div>
 
-        <div className="flex items-start gap-3 bg-white/[0.03] border border-white/8 rounded-xl p-3 text-xs font-sans text-[#9C978C]">
+        <div className="flex items-start gap-3 bg-white/[0.03] border border-white/8 rounded-xl p-3 text-xs font-sans text-[#D8D4CA]">
           <Info className="h-3.5 w-3.5 shrink-0 mt-0.5 text-[#3FA9E0]" />
           Requires completed onboarding (brand + at least one prompt). Takes ~10–20 seconds.
           Safe to run multiple times.

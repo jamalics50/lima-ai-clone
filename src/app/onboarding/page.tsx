@@ -123,7 +123,7 @@ export default function OnboardingPage() {
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
                   placeholder="e.g. Acme Corp"
-                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
                 />
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function OnboardingPage() {
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
                   placeholder="https://acme.com"
-                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
                 />
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function OnboardingPage() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   placeholder="e.g. CRM software, running shoes"
-                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
                 />
               </div>
             </div>

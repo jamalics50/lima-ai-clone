@@ -14,8 +14,8 @@
     --shadow-float-hover: 0 4px 10px rgba(17,17,20,0.06), 0 20px 48px rgba(17,17,20,0.12);
 
     --text-primary: #17181c;
-    --text-secondary: #6b6b70;
-    --text-muted: #9a9a9e;
+    --text-secondary: #4a4a4f;  /* WCAG AA ratio > 7.5:1 on light backgrounds */
+    --text-muted: #545459;      /* WCAG AA ratio > 6:1 on light backgrounds */
 
     /* keep the brand accent, refine for light backgrounds */
     --accent-primary: #e0663f;
@@ -48,6 +48,26 @@
     --ease-primary: cubic-bezier(.22, 1, .36, 1);
   }
 
+  .dark {
+    --bg-page: #0d0d0f;
+    --bg-nav: rgba(18, 18, 20, 0.75);
+    --surface-card: #17171a;
+    --surface-card-hover: #1f1f24;
+    --border-subtle: rgba(255, 255, 255, 0.10);
+
+    --text-primary: #f3f3f5;
+    --text-secondary: #a8a8b0;  /* WCAG AA ratio > 6.5:1 on dark */
+    --text-muted: #94949e;      /* WCAG AA ratio > 5:1 on dark */
+
+    --background: var(--bg-page);
+    --foreground: var(--text-primary);
+    --card: var(--surface-card);
+    --card-foreground: var(--text-primary);
+    --border: var(--border-subtle);
+    --muted: var(--border-subtle);
+    --muted-foreground: var(--text-secondary);
+  }
+
   * {
     border-color: var(--border);
   }
@@ -75,20 +95,36 @@
     color: #ffffff;
   }
   
-  /* Custom sleek scrollbar for light theme */
+  /* Custom sleek high-contrast scrollbar across Chromium, Safari, & Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
+  }
+
+  .dark * {
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+  }
+
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.55);
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.65);
   }
 }
 
@@ -106,6 +142,7 @@
 .animate-card-mount {
   animation: cardMount 0.5s var(--ease-primary) forwards;
 }
+
 @layer utilities {
   .liquid-glass {
     /* Fallback for browsers that do not support backdrop-filter */
@@ -129,6 +166,7 @@
     }
   }
 }
+
 @layer utilities {
   .carousel {
     display: flex;
@@ -139,6 +177,7 @@
     scroll-snap-align: center;
   }
 }
+
 @layer utilities {
   .liquid-glass-nav {
     /* Fallback for browsers that do not support backdrop-filter */
