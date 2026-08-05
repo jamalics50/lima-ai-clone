@@ -134,16 +134,16 @@ export default function CompetitorsPage() {
           {/* Subtle right-edge shadow to hint scrolling */}
           <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none z-30" />
           
-          <div className="overflow-x-auto touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="overflow-x-auto overflow-y-hidden scrollbar-hide touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
           <table className="w-full text-left text-sm font-sans border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-border text-[11px] font-sans font-semibold text-muted-foreground uppercase tracking-wider bg-background">
-                <th className="py-4 px-6 sticky left-0 z-20 bg-background border-r border-border/20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">Brand / Company</th>
-                <th className="py-4 px-4 text-right">Sentiment</th>
-                <th className="py-4 px-4 text-right">Market Share</th>
-                <th className="py-4 px-4 text-right">Prompt Efficacy</th>
-                <th className="py-4 px-4 text-right">Response Quality</th>
-                <th className="py-4 px-6 text-right">Status</th>
+                <th className="py-4 px-6 sticky left-0 z-20 bg-background border-r border-border/20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] min-w-[160px]">Brand / Company</th>
+                <th className="py-4 px-4 text-right min-w-[120px]">Sentiment</th>
+                <th className="py-4 px-4 text-right min-w-[120px]">Market Share</th>
+                <th className="py-4 px-4 text-right min-w-[130px]">Prompt Efficacy</th>
+                <th className="py-4 px-4 text-right min-w-[135px]">Response Quality</th>
+                <th className="py-4 px-6 text-right min-w-[110px]">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border text-foreground">
@@ -152,7 +152,7 @@ export default function CompetitorsPage() {
                   key={idx}
                   className={row.isUser ? 'bg-[#fff6f4] border-l-2 border-l-coral' : 'bg-card hover:bg-zinc-50/80 transition-colors'}
                 >
-                  <td className="py-4 px-6 font-medium sticky left-0 z-20 bg-inherit border-r border-border/20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
+                  <td className="py-4 px-6 font-medium sticky left-0 z-20 bg-inherit border-r border-border/20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] min-w-[160px]">
                     <div className="flex items-center gap-3">
                       {/* Coral avatar for user, sky blue for competitors */}
                       <div className={`h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 shadow-sm ${
@@ -160,15 +160,15 @@ export default function CompetitorsPage() {
                       }`}>
                         {row.name.charAt(0)}
                       </div>
-                      <span>{row.name}</span>
+                      <span className="whitespace-nowrap">{row.name}</span>
                     </div>
                   </td>
                   {/* Coral for user metrics, sky blue for competitors */}
-                  <td className={`py-4 px-4 font-semibold text-right ${row.isUser ? 'text-coral' : 'text-sky'}`}>{row.sentiment}</td>
-                  <td className="py-4 px-4 text-muted-foreground text-right">{row.marketShare}</td>
-                  <td className="py-4 px-4 text-muted-foreground text-right">{row.promptScore}</td>
-                  <td className="py-4 px-4 text-muted-foreground text-right">{row.responseQuality}</td>
-                  <td className="py-4 px-6 text-right">
+                  <td className={`py-4 px-4 font-semibold text-right min-w-[120px] ${row.isUser ? 'text-coral' : 'text-sky'}`}>{row.sentiment}</td>
+                  <td className="py-4 px-4 text-muted-foreground text-right min-w-[120px]">{row.marketShare}</td>
+                  <td className="py-4 px-4 text-muted-foreground text-right min-w-[130px]">{row.promptScore}</td>
+                  <td className="py-4 px-4 text-muted-foreground text-right min-w-[135px]">{row.responseQuality}</td>
+                  <td className="py-4 px-6 text-right min-w-[110px]">
                     <span className={`inline-flex items-center justify-center text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
                       row.isUser
                         ? 'bg-coral/10 text-coral border-coral/20'

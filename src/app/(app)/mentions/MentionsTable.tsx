@@ -74,20 +74,20 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
   return (
     <div className="space-y-4">
       {/* Sticky glassy filter bar */}
-      <div className="sticky top-0 z-30 -mx-1 px-1 pb-3 pt-1 backdrop-blur-md bg-background/75 border-b border-border/50">
+      <div className="sticky top-0 z-30 -mx-1 px-1 pb-3 pt-1 backdrop-blur-2xl backdrop-saturate-150 bg-white/60 dark:bg-black/60 border-b border-white/20 dark:border-white/10">
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
         {/* Search — visual only for now */}
-        <div className="relative flex-1 min-w-0 md:min-w-[200px]">
+        <div className="relative flex-1 min-w-0 md:min-w-[200px] z-10">
           <Search className="absolute left-3.5 top-3 md:top-2.5 h-4 w-4 text-muted-foreground shrink-0 stroke-[1.5]" />
           <input
             type="text"
             placeholder="Search mentions…"
-            className="w-full bg-card border border-border rounded-lg pl-10 pr-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all shadow-sm"
+            className="w-full bg-card/80 border border-border rounded-lg pl-10 pr-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all shadow-sm"
           />
         </div>
 
         {/* Mobile Filters Trigger */}
-        <div className="flex items-center justify-between md:hidden">
+        <div className="flex items-center justify-between md:hidden z-10">
           <Button variant="secondary" onClick={() => setIsMobileFiltersOpen(true)} className="flex items-center gap-2 h-11 px-4">
             <SlidersHorizontal className="h-4 w-4 shrink-0 stroke-[1.5]" /> Filters
           </Button>
@@ -99,7 +99,7 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
         {/* Mobile Filters Backdrop */}
         {isMobileFiltersOpen && (
           <div 
-            className="fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity" 
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 md:hidden transition-opacity" 
             onClick={() => setIsMobileFiltersOpen(false)} 
           />
         )}
@@ -108,7 +108,7 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
         <div className={`
           flex flex-col md:flex-row md:items-center gap-3
           fixed inset-x-0 bottom-0 z-50 md:static
-          bg-card md:bg-transparent p-5 md:p-0
+          bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl backdrop-saturate-150 md:bg-transparent p-5 md:p-0
           rounded-t-3xl md:rounded-none shadow-[0_-8px_30px_rgba(0,0,0,0.12)] md:shadow-none
           transition-transform duration-300 ease-out
           ${isMobileFiltersOpen ? 'translate-y-0' : 'translate-y-full md:translate-y-0'}
@@ -121,12 +121,12 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           </div>
 
           {/* Platform filter */}
-          <div className="flex flex-col gap-1 md:gap-0 md:block">
+          <div className="relative z-50 flex flex-col gap-1 md:gap-0 md:block">
             <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1">Platform</label>
             <select
               value={platform}
               onChange={e => pushFilter('platform', e.target.value)}
-              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
+              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto relative z-50"
             >
               <option value="all">All Platforms</option>
               {platforms.map(p => <option key={p} value={p}>{p}</option>)}
@@ -134,12 +134,12 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           </div>
 
           {/* Sentiment filter */}
-          <div className="flex flex-col gap-1 md:gap-0 md:block">
+          <div className="relative z-50 flex flex-col gap-1 md:gap-0 md:block">
             <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1 mt-1">Sentiment</label>
             <select
               value={sentiment}
               onChange={e => pushFilter('sentiment', e.target.value)}
-              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
+              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto relative z-50"
             >
               <option value="all">All Sentiments</option>
               <option value="positive">Positive</option>
@@ -149,12 +149,12 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           </div>
 
           {/* Type filter */}
-          <div className="flex flex-col gap-1 md:gap-0 md:block">
+          <div className="relative z-50 flex flex-col gap-1 md:gap-0 md:block">
             <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1 mt-1">Mention Type</label>
             <select
               value={type}
               onChange={e => pushFilter('type', e.target.value)}
-              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
+              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto relative z-50"
             >
               <option value="all">All Types</option>
               <option value="brand">Brand Only</option>
