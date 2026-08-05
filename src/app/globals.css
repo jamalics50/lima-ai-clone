@@ -95,36 +95,50 @@
     color: #ffffff;
   }
   
-  /* Custom sleek high-contrast scrollbar across Chromium, Safari, & Firefox */
+  /* Prompt 7 — Liquid Glass Custom Scrollbar across Chromium, Safari, & Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
+    scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
   }
 
   .dark * {
-    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
   }
 
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 999px;
   }
+
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.25);
     border-radius: 999px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.4);
   }
+
   .dark ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.35);
     border-radius: 999px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
+
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 
