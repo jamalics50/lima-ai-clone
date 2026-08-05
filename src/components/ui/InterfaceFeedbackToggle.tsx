@@ -31,18 +31,23 @@ export function InterfaceFeedbackToggle() {
           Spring animations, press states, and device vibration on supported hardware.
         </p>
       </div>
-      {/* iOS Native-Style Toggle Switch */}
-      <label className="relative inline-flex items-center cursor-pointer select-none">
-        <input
-          type="checkbox"
-          role="switch"
-          aria-checked={enabled}
-          checked={enabled}
-          onChange={handleToggle}
-          className="sr-only peer"
+      {/* iOS-style pill toggle */}
+      <button
+        type="button"
+        role="switch"
+        aria-checked={enabled}
+        onClick={handleToggle}
+        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 ${
+          enabled ? 'bg-coral' : 'bg-black/15'
+        }`}
+      >
+        <motion.span
+          layout
+          transition={SPRING_CONFIGS.press}
+          className="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md"
+          style={{ translateX: enabled ? 20 : 0 }}
         />
-        <div className="w-12 h-7 bg-black/15 dark:bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[20px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all after:duration-300 after:shadow-md peer-checked:bg-coral transition-colors duration-300"></div>
-      </label>
+      </button>
     </div>
   );
 }

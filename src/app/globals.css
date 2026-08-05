@@ -54,7 +54,6 @@
 
   html {
     scroll-behavior: smooth;
-    overscroll-behavior-y: none;
   }
   
   body {
@@ -63,7 +62,6 @@
     font-family: var(--font-inter), sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overscroll-behavior-y: none;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -91,16 +89,6 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.2);
-  }
-}
-
-@layer utilities {
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
 }
 
