@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { setFeedbackEnabled, isFeedbackEnabled } from '@/lib/feedback';
+import { SPRING_CONFIGS } from '@/lib/feedback';
 
 /**
  * Toggle that reads/writes the 'feedback-enabled' localStorage key.
