@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 
 interface MotionWrapperProps {
   children: ReactNode;
@@ -11,6 +11,13 @@ interface MotionWrapperProps {
 
 export function MotionWrapper({ children, delay = 0, className = '' }: MotionWrapperProps) {
   const prefersReducedMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+    }
+  }, []);
   
   return (
     <motion.div
@@ -18,7 +25,7 @@ export function MotionWrapper({ children, delay = 0, className = '' }: MotionWra
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ 
-        duration: 0.6, 
+        duration: isMobile ? 0.4 : 0.6, 
         ease: [0.22, 1, 0.36, 1], // Custom spring-like curve
         delay: delay 
       }}

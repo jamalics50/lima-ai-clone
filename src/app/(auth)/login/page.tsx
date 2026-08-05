@@ -91,7 +91,7 @@ export default async function LoginPage({
 
   return (
     <div 
-      className="h-screen max-h-screen overflow-hidden flex flex-col justify-between items-center p-4 relative text-foreground"
+      className="h-[100dvh] max-h-[100dvh] overflow-hidden flex flex-col justify-between items-center p-4 relative text-foreground"
       style={{ background: 'var(--gradient-hero)' }}
     >
       {/* Floating top header (compact, non-overlapping) */}
@@ -159,7 +159,7 @@ export default async function LoginPage({
                   type="email"
                   placeholder="name@example.com"
                   required
-                  className="flex h-10 w-full rounded-xl border border-black/10 bg-zinc-50/50 px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
+                  className="flex h-10 w-full rounded-xl border border-black/10 bg-zinc-50/50 px-3.5 py-2 text-base lg:text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
                 />
               </div>
               <div className="space-y-1">

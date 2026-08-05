@@ -14,7 +14,7 @@ export default function SettingsPage() {
       </MotionWrapper>
 
       <MotionWrapper delay={0.1}>
-        <Card className="p-7 space-y-6 shadow-sm hover:-translate-y-1 transition-all duration-300">
+        <Card className="p-4 md:p-7 space-y-6 shadow-sm hover:-translate-y-1 transition-all duration-300">
           <CardHeader className="p-0 border-b border-border pb-5">
             <CardTitle className="text-xl font-semibold">General Information</CardTitle>
             <CardDescription className="text-sm">Manage workspace identity and domain settings.</CardDescription>
@@ -25,7 +25,7 @@ export default function SettingsPage() {
               <input
                 type="text"
                 defaultValue="LIMA AI-CLONE"
-                className="w-full max-w-md bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 shadow-sm transition-all"
+                className="w-full max-w-md bg-background border border-border rounded-xl px-4 py-2.5 text-base lg:text-sm text-foreground focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 shadow-sm transition-all"
               />
             </div>
             <div className="pt-2">
@@ -37,7 +37,7 @@ export default function SettingsPage() {
 
       {/* Interface & Motion card */}
       <MotionWrapper delay={0.2}>
-        <Card className="p-7 space-y-6 shadow-sm hover:-translate-y-1 transition-all duration-300">
+        <Card className="p-4 md:p-7 space-y-6 shadow-sm hover:-translate-y-1 transition-all duration-300">
           <CardHeader className="p-0 border-b border-border pb-5">
             <CardTitle className="text-xl font-semibold">Interface &amp; Motion</CardTitle>
             <CardDescription className="text-sm">

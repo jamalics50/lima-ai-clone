@@ -41,7 +41,11 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
 
   const isActive = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
 
+  const activeNav = navigation.find(n => isActive(n.href)) || navigation[0];
+  const pageTitle = activeNav.name;
+
   return (
+    <>
     <div className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 pt-4 md:pt-6 pointer-events-none transition-all duration-200">
       <div 
         className={`pointer-events-auto flex items-center justify-between transition-all duration-300 w-full max-w-5xl rounded-[32px] border border-black/5 ${
@@ -52,17 +56,21 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
       >
         {/* Left: Brand / Workspace */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="h-9 w-9 rounded-xl bg-white shadow-sm flex items-center justify-center border border-black/5">
+          <div className="h-9 w-9 rounded-2xl bg-white shadow-sm flex items-center justify-center border border-black/5">
             <span className="font-serif font-bold text-coral text-lg">L</span>
           </div>
-          <div className="hidden md:flex flex-col justify-center h-full pb-0.5">
+          <div className="hidden lg:flex flex-col justify-center h-full pb-0.5">
             <span className="font-sans font-bold text-[14px] tracking-tight text-foreground leading-none">LIMA AI</span>
             <span className="text-[11px] text-muted-foreground font-medium">{workspaceName}</span>
           </div>
+          {/* Mobile Page Title */}
+          <div className="flex lg:hidden flex-col justify-center h-full pb-0.5 ml-1">
+            <span className="font-sans font-bold text-[15px] tracking-tight text-foreground leading-none">{pageTitle}</span>
+          </div>
         </div>
 
-        {/* Center: Navigation Links (Text only as requested) */}
-        <nav className="flex items-center gap-1 mx-4">
+        {/* Center: Navigation Links (Desktop only) */}
+        <nav className="hidden lg:flex items-center gap-1 mx-4">
           {navigation.map((item) => {
             const active = isActive(item.href);
             return (
@@ -79,7 +87,7 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                 <AnimatePresence>
                   {active && (
                     <motion.div
-                      layoutId="topnav-active-pill"
+                      layoutId="topnav-active-pill-desktop"
                       className="absolute inset-0 rounded-full bg-white shadow-sm border border-black/5"
                       transition={SPRING_CONFIGS.slide}
                       initial={{ opacity: 0 }}
@@ -101,13 +109,13 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
             <>
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 hover:bg-black/5 p-1 pr-3 rounded-full transition-colors"
+                className="flex items-center gap-2 hover:bg-black/5 p-1 lg:pr-3 rounded-full transition-colors"
               >
                 <div className="h-8 w-8 rounded-full flex items-center justify-center text-sm font-sans font-bold bg-coral text-white shadow-sm">
                   {initial}
                 </div>
-                <span className="text-[13px] font-medium text-foreground hidden sm:block truncate max-w-[120px]">{email}</span>
-                <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
+                <span className="text-[13px] font-medium text-foreground hidden lg:block truncate max-w-[120px]">{email}</span>
+                <ChevronDown className="h-4 w-4 text-muted-foreground hidden lg:block" />
               </button>
               
               <AnimatePresence>
@@ -115,15 +123,17 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                   <>
                     <motion.div 
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                      className="fixed inset-0 z-40"
+                      className="fixed inset-0 z-40 bg-black/20 lg:bg-transparent"
                       onClick={() => setIsDropdownOpen(false)}
                     />
+                    
+                    {/* Desktop Dropdown */}
                     <motion.div
                       initial={{ opacity: 0, y: 8, scale: 0.96 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={SPRING_CONFIGS.modal}
-                      className="absolute right-0 top-full mt-3 w-56 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
+                      className="hidden lg:block absolute right-0 top-full mt-3 w-56 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
                     >
                       <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-foreground hover:bg-black/5 transition-colors">
                         <Settings className="h-4 w-4 text-muted-foreground" />
@@ -133,6 +143,27 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                       <form action="/auth/signout" method="post">
                         <button type="submit" className="flex w-full items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-red-600 hover:bg-red-50 transition-colors">
                           <LogOut className="h-4 w-4" />
+                          Sign out
+                        </button>
+                      </form>
+                    </motion.div>
+
+                    {/* Mobile Bottom Sheet */}
+                    <motion.div
+                      initial={{ opacity: 0, y: '100%' }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: '100%' }}
+                      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                      className="lg:hidden fixed inset-x-0 bottom-0 w-full bg-white/95 backdrop-blur-xl rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.12)] border-t border-black/5 overflow-hidden pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] z-50"
+                    >
+                      <div className="w-12 h-1.5 bg-black/10 rounded-full mx-auto mb-4" />
+                      <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-6 py-4 text-[16px] font-medium text-foreground hover:bg-black/5 transition-colors">
+                        <Settings className="h-5 w-5 text-muted-foreground" />
+                        Settings
+                      </Link>
+                      <form action="/auth/signout" method="post">
+                        <button type="submit" className="flex w-full items-center gap-3 px-6 py-4 text-[16px] font-medium text-red-600 hover:bg-red-50 transition-colors">
+                          <LogOut className="h-5 w-5" />
                           Sign out
                         </button>
                       </form>
@@ -149,5 +180,40 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
         </div>
       </div>
     </div>
+
+    {/* Mobile Bottom Tab Bar */}
+    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-50 flex items-center justify-around px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] bg-white/80 backdrop-blur-[20px] backdrop-saturate-[1.4] border-t border-black/5 shadow-soft">
+      {navigation.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <Link
+            key={item.name}
+            href={item.href}
+            onClick={() => trigger('select')}
+            className={`relative flex flex-col items-center justify-center gap-1 w-full rounded-xl py-2 px-1 text-[10px] font-sans transition-colors duration-150 ${
+              active
+                ? 'text-foreground font-semibold'
+                : 'text-muted-foreground font-medium hover:text-foreground hover:bg-black/5'
+            }`}
+          >
+            <AnimatePresence>
+              {active && (
+                <motion.div
+                  layoutId="topnav-active-pill-mobile"
+                  className="absolute inset-0 rounded-xl bg-white shadow-sm border border-black/5"
+                  transition={SPRING_CONFIGS.slide}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                />
+              )}
+            </AnimatePresence>
+            <item.icon className="relative z-10 h-5 w-5 mb-0.5" />
+            <span className="relative z-10">{item.name}</span>
+          </Link>
+        );
+      })}
+    </nav>
+    </>
   );
 }

@@ -33,7 +33,7 @@ function EmptyState({ title, body }: { title: string; body: string }) {
   return (
     <div className="border border-border border-dashed rounded-2xl py-20 flex flex-col items-center gap-5 text-center bg-card shadow-sm">
       <div className="h-16 w-16 rounded-2xl border border-sky/20 bg-sky/5 flex items-center justify-center">
-        <Layers className="h-8 w-8 text-sky" />
+        <Layers className="h-8 w-8 text-sky shrink-0 stroke-[1.5]" />
       </div>
       <div>
         <p className="text-xl font-serif font-medium text-foreground tracking-tight">{title}</p>
@@ -229,18 +229,18 @@ export default async function Dashboard() {
           {/* ── 1. HERO ROW (2fr / 1fr) ──────────────────────────────────── */}
           <MotionWrapper delay={0.1} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left (2fr): Featured Visibility card — flagship glow */}
-            <Card delay={0.05} interactive className="lg:col-span-2 flex flex-col justify-between p-7 border-coral/20">
+            <Card delay={0.05} interactive className="lg:col-span-2 flex flex-col justify-between p-4 md:p-7 border-coral/20">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <span className="text-[10px] font-sans uppercase tracking-widest text-muted-foreground font-bold">Primary Metric</span>
-                  <h3 className="text-2xl font-serif font-medium text-foreground tracking-tight mt-1">Visibility Score</h3>
+                  <h3 className="text-3xl font-serif font-medium text-foreground tracking-tight mt-1">Visibility Score</h3>
                 </div>
                 <span className="text-[11px] font-sans font-semibold text-muted-foreground bg-black/5 px-3 py-1.5 rounded-full border border-black/5">
                   Tracked across {trackedPlatforms} platform{trackedPlatforms !== 1 ? 's' : ''}
                 </span>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-around my-4 gap-6">
+              <div className="flex flex-col md:flex-row items-center justify-around my-4 gap-6">
                 {/* 150px coral gauge — primary metric */}
                 <CircularGauge
                   percentage={visibilityPct}
@@ -275,15 +275,15 @@ export default async function Dashboard() {
             {/* Right (1fr): Stack of 2 small cards */}
             <div className="flex flex-col gap-6">
               {/* Share of Voice — horizontal progress bar pattern */}
-              <Card delay={0.15} interactive className="flex-1 p-6 flex flex-col justify-center gap-3">
+              <Card delay={0.15} interactive className="flex-1 p-4 md:p-7 flex flex-col justify-center gap-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] uppercase font-sans font-bold tracking-wider text-muted-foreground">Share of Voice</span>
-                    <div className="text-3xl font-serif font-medium text-foreground mt-1">
+                    <span className="text-[10px] font-sans uppercase tracking-widest text-muted-foreground font-bold">Share of Voice</span>
+                    <div className="text-3xl font-serif font-medium text-foreground tracking-tight mt-1">
                       <AnimatedNumber value={shareOfVoice} suffix="%" delay={150} />
                     </div>
                   </div>
-                  <div className="bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                  <div className="inline-flex items-center bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
                     ↑12%
                   </div>
                 </div>
@@ -293,15 +293,15 @@ export default async function Dashboard() {
               </Card>
 
               {/* Total Mentions — plain big number */}
-              <Card delay={0.2} interactive className="flex-1 p-6 flex flex-col justify-center">
+              <Card delay={0.2} interactive className="flex-1 p-4 md:p-7 flex flex-col justify-center">
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] uppercase font-sans font-bold tracking-wider text-muted-foreground">Brand Mentions</span>
-                    <div className="text-4xl font-serif font-medium text-foreground tracking-tight mt-1">
+                    <span className="text-[10px] font-sans uppercase tracking-widest text-muted-foreground font-bold">Brand Mentions</span>
+                    <div className="text-3xl font-serif font-medium text-foreground tracking-tight mt-1">
                       <AnimatedNumber value={totalBrandMentions} delay={200} />
                     </div>
                   </div>
-                  <div className="bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                  <div className="inline-flex items-center bg-emerald-50 text-emerald-600 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
                     ↑8%
                   </div>
                 </div>
@@ -314,7 +314,7 @@ export default async function Dashboard() {
 
           {/* ── 2. FULL-WIDTH COMPETITIVE ANALYSIS (3-column PercentileBars) ── */}
           <MotionWrapper delay={0.2}>
-            <Card delay={0.25} className="p-7 hover:-translate-y-1 transition-all duration-300">
+            <Card delay={0.25} className="p-4 md:p-7 hover:-translate-y-1 transition-all duration-300">
             <CardHeader className="p-0 mb-6">
               <CardTitle className="text-xl font-semibold">Competitive Benchmark Analysis</CardTitle>
               <CardDescription className="text-sm">
@@ -323,7 +323,7 @@ export default async function Dashboard() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white/[0.02] rounded-xl border border-border p-5">
+                <div className="bg-white/[0.02] rounded-xl border border-border p-4 md:p-5">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-sans font-medium text-foreground">Positive Sentiment</span>
                     <span className="text-sm font-sans font-semibold text-coral">
@@ -334,7 +334,7 @@ export default async function Dashboard() {
                   <PercentileBar score={brandPositivePct} average={compPositivePct} />
                 </div>
 
-                <div className="bg-white/[0.02] rounded-xl border border-border p-5">
+                <div className="bg-white/[0.02] rounded-xl border border-border p-4 md:p-5">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-sans font-medium text-foreground">Share of Voice</span>
                     <span className="text-sm font-sans font-semibold text-coral">
@@ -344,7 +344,7 @@ export default async function Dashboard() {
                   <PercentileBar score={shareOfVoice} average={Math.round((100 - shareOfVoice) / Math.max((competitors ?? []).length, 1))} />
                 </div>
 
-                <div className="bg-white/[0.02] rounded-xl border border-border p-5">
+                <div className="bg-white/[0.02] rounded-xl border border-border p-4 md:p-5">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-sans font-medium text-foreground">Platform Reach</span>
                     <span className="text-sm font-sans font-semibold text-coral">
@@ -406,7 +406,7 @@ export default async function Dashboard() {
                 {insightItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className={`bg-card rounded-2xl border-l-2 border p-5 space-y-2 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                    className={`bg-card rounded-2xl border-l-2 border p-4 md:p-5 space-y-2 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                       item.type === 'warning'
                         ? 'border-l-coral border-coral/20 hover:border-coral/35'
                         : item.type === 'opportunity'
@@ -446,7 +446,7 @@ export default async function Dashboard() {
                 <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
                 <CardDescription className="text-sm">Live tracking across all AI platforms.</CardDescription>
               </CardHeader>
-              <CardContent className="p-0 px-6 pb-6 divide-y divide-border">
+              <CardContent className="divide-y divide-border">
                 {recentActivity.length === 0 ? (
                   <p className="text-sm font-sans text-muted-foreground py-6 text-center">No recent runs found.</p>
                 ) : (

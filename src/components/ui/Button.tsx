@@ -16,7 +16,7 @@ export function Button({
   disabled,
   ...props 
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center font-sans font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 disabled:opacity-50 disabled:pointer-events-none rounded-full border cursor-pointer';
+  const baseStyles = 'relative before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:min-w-[44px] before:min-h-[44px] before:w-full before:h-full before:content-[\'\'] inline-flex items-center justify-center font-sans font-medium transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/50 disabled:opacity-50 disabled:pointer-events-none rounded-full border cursor-pointer hover:-translate-y-[1.5px] hover:scale-[1.015] active:-translate-y-0 active:scale-100';
   
   const variants = {
     primary:   'bg-coral text-white border-transparent shadow-[0_2px_6px_rgba(224,102,63,0.25),0_8px_20px_rgba(224,102,63,0.15)] hover:brightness-105 active:shadow-sm',
@@ -39,7 +39,6 @@ export function Button({
     <motion.button
       className={classes}
       disabled={disabled}
-      whileHover={!disabled ? { y: -1.5, scale: 1.015 } : undefined}
       whileTap={!disabled ? { scale: 0.96, y: 0 } : undefined}
       transition={SPRING_CONFIGS.press}
       onClick={(e) => {

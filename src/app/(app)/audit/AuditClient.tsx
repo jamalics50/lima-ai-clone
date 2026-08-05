@@ -50,7 +50,7 @@ function ScoreBadge({ score, total = 15 }: { score: number; total?: number }) {
 function CriterionRow({ result, index }: { result: CriterionResult; index: number }) {
   return (
     <motion.div
-      className={`flex items-start gap-3 py-4 border-b border-border last:border-0`}
+      className={`flex items-start gap-3 py-3`}
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ ...SPRING_CONFIGS.gentle, delay: index * 0.03 }}
@@ -138,27 +138,28 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
   return (
     <div className="space-y-8">
       {/* URL Input */}
-      <div className="bg-card border border-border rounded-2xl p-7 space-y-5 shadow-sm">
+      <div className="bg-card border border-border rounded-2xl p-4 md:p-7 space-y-5 shadow-sm">
         <div>
           <label className="block text-sm font-sans font-medium text-foreground mb-1">Website URL to audit</label>
           <p className="text-xs font-sans text-muted-foreground">
             We&apos;ll check your page against 15 AI-readiness criteria — no JS execution, raw HTML only.
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 flex items-center bg-background border border-border rounded-xl px-4 gap-2 focus-within:border-coral/50 focus-within:ring-1 focus-within:ring-coral/50 transition-all shadow-sm">
-            <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
+            <Globe className="h-4 w-4 text-muted-foreground shrink-0 stroke-[1.5]" />
             <input
               type="url"
               value={url}
               onChange={e => setUrl(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !isPending && handleRun()}
               placeholder="https://yoursite.com"
-              className="flex-1 bg-transparent py-3 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+              className="flex-1 bg-transparent py-3 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
             />
           </div>
           <Button
             variant="primary"
+            className="w-full sm:w-auto h-12 sm:h-9 min-h-[48px] sm:min-h-0"
             onClick={handleRun}
             disabled={isPending || !url}
           >
@@ -198,7 +199,7 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
       {results && score !== null && !isPending && (
         <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
           {/* Score header */}
-          <div className="p-7 border-b border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-4 md:p-7 border-b border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <ScoreBadge score={score} />
               <div className="flex items-center gap-2 mt-4 text-xs font-sans text-muted-foreground">
@@ -225,7 +226,7 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
           </div>
 
           {/* Checklist — items reveal one at a time via revealedCount */}
-          <div className="px-7">
+          <div className="px-7 py-5 grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
             <AnimatePresence>
               {/* Failed first, then passed */}
               {[...results.filter(r => !r.passed), ...results.filter(r => r.passed)]
@@ -234,14 +235,14 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
             </AnimatePresence>
             {/* Placeholder chips for items not yet revealed */}
             {revealedCount < results.length && (
-              <div className="space-y-0">
+              <>
                 {Array.from({ length: Math.min(3, results.length - revealedCount) }).map((_, i) => (
-                  <div key={i} className="flex items-center gap-3 py-4 border-b border-border">
-                    <div className="h-5 w-5 rounded-full bg-black/5 animate-pulse" />
-                    <div className="h-3 flex-1 rounded-full bg-black/5 animate-pulse" />
+                  <div key={i} className="flex items-center gap-3 py-3">
+                    <div className="h-5 w-5 rounded-full bg-black/5 animate-pulse shrink-0" />
+                    <div className="h-3 flex-1 max-w-[120px] rounded-full bg-black/5 animate-pulse" />
                   </div>
                 ))}
-              </div>
+              </>
             )}
           </div>
         </div>
@@ -257,7 +258,7 @@ export default function AuditClient({ history: initialHistory, brandWebsite }: A
               return (
                 <div key={item.id} className="flex items-center justify-between px-5 py-4 hover:bg-surface-2 transition-colors">
                   <div className="flex items-center gap-3 min-w-0">
-                    <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <Globe className="h-4 w-4 text-muted-foreground shrink-0 stroke-[1.5]" />
                     <span className="text-sm font-sans font-medium text-foreground truncate max-w-xs">{item.url}</span>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">

@@ -40,7 +40,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const email = user.email || '';
 
   return (
-    <div className="flex h-screen overflow-hidden bg-page text-foreground relative">
+    <div className="flex h-[100dvh] overflow-hidden bg-page text-foreground relative">
       {/* Living Ambient Background */}
       <AmbientBackground />
 
@@ -51,7 +51,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <FloatingHeader workspaceName={workspaceName} initial={initial} email={email} />
 
         {/* Main scrollable area */}
-        <main className="flex-1 overflow-y-auto px-8 pb-12 pt-28">
+        <main className="flex-1 overflow-y-auto px-4 sm:px-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-[calc(3rem+env(safe-area-inset-bottom))] pt-28">
           <div className="max-w-[1200px] mx-auto space-y-6">
             {children}
           </div>

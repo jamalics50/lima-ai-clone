@@ -90,7 +90,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <Card className="p-8 max-w-2xl mx-auto bg-white shadow-float rounded-[28px] border border-black/5">
+    <Card className="p-5 sm:p-8 max-w-2xl mx-auto bg-white shadow-float rounded-[28px] border border-black/5">
       {/* Progress Step Bar */}
       <div className="mb-8">
         <div className="flex gap-2.5 mb-3">
@@ -123,7 +123,7 @@ export default function OnboardingPage() {
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
                   placeholder="e.g. Acme Corp"
-                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
                 />
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function OnboardingPage() {
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
                   placeholder="https://acme.com"
-                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-coral/50 focus:ring-1 focus:ring-coral/50 transition-all"
                 />
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function OnboardingPage() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   placeholder="e.g. CRM software, running shoes"
-                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
+                  className="w-full bg-zinc-50/50 border border-black/10 rounded-xl pl-10 pr-4 py-2.5 text-base lg:text-sm font-sans text-foreground placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:border-coral/50 focus-visible:ring-1 focus-visible:ring-coral/50 transition-all"
                 />
               </div>
             </div>
@@ -188,14 +188,14 @@ export default function OnboardingPage() {
                     value={comp.name}
                     onChange={(e) => handleCompetitorChange(idx, 'name', e.target.value)}
                     placeholder="Competitor Name"
-                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-2 text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 transition-all shadow-sm"
+                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 transition-all shadow-sm"
                   />
                   <input
                     type="url"
                     value={comp.url}
                     onChange={(e) => handleCompetitorChange(idx, 'url', e.target.value)}
                     placeholder="Website URL (e.g. https://competitor.com)"
-                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-2 text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 transition-all shadow-sm"
+                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 transition-all shadow-sm"
                   />
                 </div>
                 {competitors.length > 1 && (

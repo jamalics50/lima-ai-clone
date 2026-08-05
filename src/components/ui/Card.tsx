@@ -13,7 +13,7 @@ export function Card({ className = '', delay = 0, interactive = false, style, ..
 
   return (
     <div 
-      className={`rounded-lg border border-black/5 bg-card text-card-foreground shadow-float transition-all duration-[240ms] ease-out ${
+      className={`rounded-2xl border border-black/5 bg-card text-card-foreground shadow-float transition-all duration-[240ms] ease-out ${
         interactive ? 'hover:-translate-y-[2px] hover:shadow-float-hover hover:bg-white' : ''
       } ${className}`} 
       style={mountStyle}
@@ -23,7 +23,7 @@ export function Card({ className = '', delay = 0, interactive = false, style, ..
 }
 
 export function CardHeader({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`flex flex-col space-y-1.5 p-5 ${className}`} {...props} />;
+  return <div className={`flex flex-col space-y-1.5 p-4 md:p-7 ${className}`} {...props} />;
 }
 
 export function CardTitle({ className = '', ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
@@ -35,9 +35,9 @@ export function CardDescription({ className = '', ...props }: React.HTMLAttribut
 }
 
 export function CardContent({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`p-5 pt-0 ${className}`} {...props} />;
+  return <div className={`p-4 md:p-7 pt-0 md:pt-0 ${className}`} {...props} />;
 }
 
 export function CardFooter({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`flex items-center p-5 pt-0 ${className}`} {...props} />;
+  return <div className={`flex items-center p-4 md:p-7 pt-0 md:pt-0 ${className}`} {...props} />;
 }

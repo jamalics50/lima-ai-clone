@@ -12,7 +12,7 @@ export default async function OnboardingLayout({ children }: { children: React.R
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#f5f4f1] text-foreground relative p-4 overflow-x-hidden">
+    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center bg-[#f5f4f1] text-foreground relative p-4 overflow-x-hidden">
       <AmbientBackground />
 
       <div className="w-full max-w-2xl relative z-10 py-8">

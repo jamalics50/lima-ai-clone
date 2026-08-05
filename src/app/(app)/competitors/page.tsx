@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/Button';
 import { CircularGauge } from '@/components/ui/CircularGauge';
 import { PercentileBar } from '@/components/ui/PercentileBar';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
-import { Plus, TrendingUp, Award } from 'lucide-react';
+import { TrendingUp, Award } from 'lucide-react';
 import { MotionWrapper } from '@/components/ui/MotionWrapper';
+import { AddCompetitorModal } from './AddCompetitorModal';
 
 const competitorsMatrix = [
   { name: 'Your Brand (LIMA)', sentiment: '84%', marketShare: '32%', promptScore: '92%', responseQuality: '85%', status: 'Primary', isUser: true },
@@ -33,15 +34,13 @@ export default function CompetitorsPage() {
           </p>
         </div>
         {/* One primary button per page — coral */}
-        <Button variant="primary" className="flex items-center gap-2">
-          <Plus className="h-4 w-4" /> Add Competitor
-        </Button>
+        <AddCompetitorModal />
       </MotionWrapper>
 
       {/* HERO ROW: asymmetric split — featured Your Brand card + KPI counters */}
       <MotionWrapper delay={0.1} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Featured "Your Brand" card — coral glow, market leader emotional high point */}
-        <Card className="lg:col-span-2 p-7 border-coral/30 bg-gradient-to-br from-card to-coral/5 shadow-glow">
+        <Card className="lg:col-span-2 p-4 md:p-7 border-coral/30 bg-gradient-to-br from-card to-coral/5 shadow-glow">
           <div className="flex items-center gap-2 text-xs font-sans text-coral uppercase tracking-wider font-semibold mb-6">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-coral/15 border border-coral/25 text-coral">
               <Award className="h-3.5 w-3.5" /> Your Brand — Market Leader
@@ -57,7 +56,7 @@ export default function CompetitorsPage() {
                   <AnimatedNumber value={competitorsMatrix.length} delay={100} />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-4 border-t border-border">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-sans text-muted-foreground">Highest SOV</span>
                   <span className="text-lg font-serif font-medium text-foreground">32%</span>
@@ -77,7 +76,7 @@ export default function CompetitorsPage() {
 
         {/* Right: Quick KPI stack */}
         <div className="flex flex-col gap-6">
-          <Card className="flex-1 p-6 flex items-center justify-between">
+          <Card className="flex-1 p-4 md:p-6 flex items-center justify-between">
             <div>
               <span className="text-xs font-sans text-muted-foreground">Market Position</span>
               <div className="text-2xl font-serif font-medium text-foreground mt-0.5">12 Active</div>
@@ -97,7 +96,7 @@ export default function CompetitorsPage() {
 
       {/* HEAD-TO-HEAD COMPARISON STRIP — horizontal bar comparisons, non-grid rhythm */}
       <MotionWrapper delay={0.2}>
-        <Card className="p-7 shadow-sm hover:-translate-y-1 transition-all duration-300">
+        <Card className="p-4 md:p-7 shadow-sm hover:-translate-y-1 transition-all duration-300">
         <CardHeader className="p-0 mb-6">
           <CardTitle className="text-xl font-semibold">You vs. Top Competitor</CardTitle>
           <CardDescription className="text-sm">
@@ -107,9 +106,9 @@ export default function CompetitorsPage() {
         <CardContent className="p-0 space-y-6">
           {barComparisons.map((item, idx) => (
             <div key={idx}>
-              <div className="flex justify-between items-center mb-1.5">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 gap-1.5 sm:gap-0">
                 <span className="text-sm font-sans font-medium text-foreground">{item.label}</span>
-                <div className="flex items-center gap-4 text-xs font-sans">
+                <div className="flex items-center justify-between sm:justify-start gap-4 text-xs font-sans">
                   {/* Coral for user, sky blue for competitor */}
                   <span className="text-coral font-semibold">You: {item.yourScore}</span>
                   <span className="text-sky font-medium">{item.competitorName}: {item.topCompetitor}</span>
@@ -125,21 +124,25 @@ export default function CompetitorsPage() {
       {/* COMPETITOR MATRIX TABLE — table rhythm, deliberately different from card grid */}
       <MotionWrapper delay={0.3}>
         <Card className="p-0 overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300">
-        <CardHeader className="p-6 border-b border-border bg-background">
+        <CardHeader className="p-4 md:p-6 border-b border-border bg-background">
           <CardTitle className="text-xl font-semibold">Full Market Comparison Matrix</CardTitle>
           <CardDescription className="text-sm">
             Head-to-head metrics comparing your brand with all tracked competitors.
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-0 overflow-x-auto bg-card">
-          <table className="w-full text-left text-sm font-sans border-collapse">
+        <CardContent className="p-0 bg-card relative">
+          {/* Subtle right-edge shadow to hint scrolling */}
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none z-30" />
+          
+          <div className="overflow-x-auto touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <table className="w-full text-left text-sm font-sans border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-border text-[11px] font-sans font-semibold text-muted-foreground uppercase tracking-wider bg-background">
-                <th className="py-4 px-6">Brand / Company</th>
-                <th className="py-4 px-4">Sentiment</th>
-                <th className="py-4 px-4">Market Share</th>
-                <th className="py-4 px-4">Prompt Efficacy</th>
-                <th className="py-4 px-4">Response Quality</th>
+                <th className="py-4 px-6 sticky left-0 z-20 bg-background border-r border-border/20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">Brand / Company</th>
+                <th className="py-4 px-4 text-right">Sentiment</th>
+                <th className="py-4 px-4 text-right">Market Share</th>
+                <th className="py-4 px-4 text-right">Prompt Efficacy</th>
+                <th className="py-4 px-4 text-right">Response Quality</th>
                 <th className="py-4 px-6 text-right">Status</th>
               </tr>
             </thead>
@@ -147,9 +150,9 @@ export default function CompetitorsPage() {
               {competitorsMatrix.map((row, idx) => (
                 <tr
                   key={idx}
-                  className={row.isUser ? 'bg-coral/5 border-l-2 border-l-coral' : 'hover:bg-zinc-50/80 transition-colors'}
+                  className={row.isUser ? 'bg-[#fff6f4] border-l-2 border-l-coral' : 'bg-card hover:bg-zinc-50/80 transition-colors'}
                 >
-                  <td className="py-4 px-6 font-medium">
+                  <td className="py-4 px-6 font-medium sticky left-0 z-20 bg-inherit border-r border-border/20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
                     <div className="flex items-center gap-3">
                       {/* Coral avatar for user, sky blue for competitors */}
                       <div className={`h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 shadow-sm ${
@@ -161,12 +164,12 @@ export default function CompetitorsPage() {
                     </div>
                   </td>
                   {/* Coral for user metrics, sky blue for competitors */}
-                  <td className={`py-4 px-4 font-semibold ${row.isUser ? 'text-coral' : 'text-sky'}`}>{row.sentiment}</td>
-                  <td className="py-4 px-4 text-muted-foreground">{row.marketShare}</td>
-                  <td className="py-4 px-4 text-muted-foreground">{row.promptScore}</td>
-                  <td className="py-4 px-4 text-muted-foreground">{row.responseQuality}</td>
+                  <td className={`py-4 px-4 font-semibold text-right ${row.isUser ? 'text-coral' : 'text-sky'}`}>{row.sentiment}</td>
+                  <td className="py-4 px-4 text-muted-foreground text-right">{row.marketShare}</td>
+                  <td className="py-4 px-4 text-muted-foreground text-right">{row.promptScore}</td>
+                  <td className="py-4 px-4 text-muted-foreground text-right">{row.responseQuality}</td>
                   <td className="py-4 px-6 text-right">
-                    <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap ${
+                    <span className={`inline-flex items-center justify-center text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
                       row.isUser
                         ? 'bg-coral/10 text-coral border-coral/20'
                         : 'bg-black/5 text-muted-foreground border-border'
@@ -178,6 +181,7 @@ export default function CompetitorsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </CardContent>
       </Card>
       </MotionWrapper>

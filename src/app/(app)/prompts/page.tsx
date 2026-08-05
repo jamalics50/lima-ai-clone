@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { Clock, Layers } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { PromptRow } from './PromptRow';
+import { CreatePromptModal } from './CreatePromptModal';
 import { MotionWrapper } from '@/components/ui/MotionWrapper';
 
 interface Prompt {
@@ -75,14 +76,12 @@ export default async function PromptsPage() {
           </p>
         </div>
         {/* One primary button per page */}
-        <Button variant="primary" className="flex items-center gap-2">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Create Prompt
-        </Button>
+        <CreatePromptModal />
       </MotionWrapper>
 
       {/* Prompt List */}
       <MotionWrapper delay={0.1}>
-        <Card className="p-7 shadow-sm hover:-translate-y-1 transition-all duration-300">
+        <Card className="p-4 md:p-7 shadow-sm hover:-translate-y-1 transition-all duration-300">
         <div className="flex items-center gap-3 mb-6">
           <div className="h-10 w-10 rounded-lg bg-sky/10 text-sky flex items-center justify-center border border-sky/20">
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
@@ -97,7 +96,7 @@ export default async function PromptsPage() {
           /* Empty state */
           <div className="border border-border border-dashed rounded-2xl py-20 flex flex-col items-center text-center gap-4 bg-card shadow-sm">
             <div className="h-16 w-16 rounded-2xl border border-sky/20 bg-sky/5 flex items-center justify-center">
-              <Layers className="h-8 w-8 text-sky" />
+              <Layers className="h-8 w-8 text-sky shrink-0 stroke-[1.5]" />
             </div>
             <p className="text-xl font-serif font-medium tracking-tight text-foreground">No prompts yet</p>
             <p className="text-sm font-sans text-muted-foreground max-w-sm">
@@ -118,7 +117,7 @@ export default async function PromptsPage() {
       {recentRuns.length > 0 && (
         <MotionWrapper delay={0.2}>
           <Card className="p-0 overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300">
-          <div className="flex items-center gap-3 p-6 border-b border-border">
+          <div className="flex items-center gap-3 p-4 md:p-7 border-b border-border">
             <div className="h-10 w-10 rounded-lg bg-coral/10 text-coral flex items-center justify-center border border-coral/20">
               <Clock className="h-5 w-5" />
             </div>
