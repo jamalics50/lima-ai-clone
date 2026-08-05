@@ -363,8 +363,12 @@ export default async function Dashboard() {
             <MotionWrapper delay={0.3} className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-serif font-medium text-foreground tracking-tight">Competitor Tracking</h3>
-                <a href="/competitors" className="text-xs font-sans text-sky font-medium hover:underline">
-                  Full analysis →
+                <a 
+                  href="/competitors" 
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-card border border-border text-xs font-sans font-medium text-foreground hover:border-sky/30 hover:bg-black/5 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md"
+                >
+                  <span>Full analysis</span>
+                  <span className="text-sky font-semibold transition-transform duration-200 group-hover:translate-x-0.5">→</span>
                 </a>
               </div>
               {/* Flex row, overflow-x: auto, each pill ~150px wide */}
