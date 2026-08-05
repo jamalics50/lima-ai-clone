@@ -361,18 +361,11 @@ export default async function Dashboard() {
           {/* ── 3. HORIZONTAL COMPETITOR STRIP — sky blue only ────────────── */}
           {competitorStrip.length > 0 && (
             <MotionWrapper delay={0.3} className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div>
                 <h3 className="text-lg font-serif font-medium text-foreground tracking-tight">Competitor Tracking</h3>
-                <a 
-                  href="/competitors" 
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-card border border-border text-xs font-sans font-medium text-foreground hover:border-sky/30 hover:bg-black/5 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md"
-                >
-                  <span>Full analysis</span>
-                  <span className="text-sky font-semibold transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-                </a>
               </div>
               {/* Flex row, overflow-x: auto, each pill ~150px wide */}
-              <div className="flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
+              <div className="flex items-center gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
                 {competitorStrip.map((comp, idx) => (
                   <div
                     key={comp.id}
@@ -390,6 +383,15 @@ export default async function Dashboard() {
                     </div>
                   </div>
                 ))}
+
+                {/* Structural twin "Full analysis →" button inside the same row */}
+                <a
+                  href="/competitors"
+                  className="min-w-[150px] shrink-0 bg-card border border-border hover:border-sky/30 transition-all duration-200 rounded-xl py-3 px-4 flex items-center justify-center gap-2 shadow-sm hover:shadow-md text-xs font-sans font-medium text-foreground hover:bg-black/5"
+                >
+                  <span>Full analysis</span>
+                  <span className="text-sky font-semibold">→</span>
+                </a>
               </div>
             </MotionWrapper>
           )}
