@@ -365,7 +365,7 @@ export default async function Dashboard() {
                 <h3 className="text-lg font-serif font-medium text-foreground tracking-tight">Competitor Tracking</h3>
               </div>
               {/* Flex row, overflow-x: auto, each pill ~150px wide */}
-              <div className="flex items-center gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
+              <div className="carousel flex items-center gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
                 {competitorStrip.map((comp, idx) => (
                   <div
                     key={comp.id}

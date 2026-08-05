@@ -33,7 +33,7 @@ export function CreatePromptModal() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
               transition={SPRING_CONFIGS.modal}
-              className="fixed z-50 flex flex-col bg-card overflow-hidden inset-x-0 bottom-0 w-full rounded-t-[32px] pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] px-6 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] border-t border-black/5 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg md:rounded-[24px] md:p-6 md:shadow-float md:border md:border-black/5"
+              className="fixed z-50 flex flex-col liquid-glass overflow-hidden inset-x-0 bottom-0 w-full rounded-t-[32px] pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] px-6 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] border-t border-black/5 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg md:rounded-[24px] md:p-6 md:shadow-float md:border md:border-black/5"
             >
               {/* Mobile handle */}
               <div className="w-12 h-1.5 bg-black/10 rounded-full mx-auto mb-6 shrink-0 md:hidden" />

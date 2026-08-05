@@ -31,12 +31,24 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
   const { trigger } = useFeedback();
 
   useEffect(() => {
+    const mainNode = document.getElementById('main-scroll');
+    if (!mainNode) return;
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = mainNode.scrollTop;
+          const progress = Math.min(Math.max(scrollY / 80, 0), 1);
+          document.documentElement.style.setProperty('--nav-scroll', progress.toString());
+          setIsScrolled(scrollY > 24);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check initial scroll
-    return () => window.removeEventListener('scroll', handleScroll);
+    mainNode.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => mainNode.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isActive = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
@@ -48,10 +60,10 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
     <>
     <div className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 pt-4 md:pt-6 pointer-events-none transition-all duration-200">
       <div 
-        className={`pointer-events-auto flex items-center justify-between transition-all duration-300 w-full max-w-5xl rounded-[32px] border border-black/5 ${
+        className={`pointer-events-auto flex items-center justify-between transition-all duration-300 w-full max-w-5xl rounded-[32px] border border-black/5 liquid-glass-nav ${
           isScrolled 
-            ? 'h-14 px-6 bg-white/80 backdrop-blur-[20px] backdrop-saturate-[1.4] shadow-soft scale-[0.98] -translate-y-1'
-            : 'h-16 px-8 bg-white/70 backdrop-blur-[16px] backdrop-saturate-[1.3] shadow-float scale-100'
+            ? 'h-14 px-6 shadow-soft scale-[0.98] -translate-y-1'
+            : 'h-16 px-8 shadow-float scale-100'
         }`}
       >
         {/* Left: Brand / Workspace */}
@@ -133,7 +145,7 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.96 }}
                       transition={SPRING_CONFIGS.modal}
-                      className="hidden lg:block absolute right-0 top-full mt-3 w-56 bg-white/90 backdrop-blur-xl rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
+                      className="hidden lg:block absolute right-0 top-full mt-3 w-56 liquid-glass rounded-[20px] shadow-float border border-black/5 overflow-hidden py-2 z-50"
                     >
                       <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-5 py-2.5 text-[14px] font-medium text-foreground hover:bg-black/5 transition-colors">
                         <Settings className="h-4 w-4 text-muted-foreground" />
@@ -154,7 +166,7 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: '100%' }}
                       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                      className="lg:hidden fixed inset-x-0 bottom-0 w-full bg-white/95 backdrop-blur-xl rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.12)] border-t border-black/5 overflow-hidden pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] z-50"
+                      className="lg:hidden fixed inset-x-0 bottom-0 w-full liquid-glass rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.12)] border-t border-black/5 overflow-hidden pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] z-50"
                     >
                       <div className="w-12 h-1.5 bg-black/10 rounded-full mx-auto mb-4" />
                       <Link href="/settings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-3 px-6 py-4 text-[16px] font-medium text-foreground hover:bg-black/5 transition-colors">
@@ -182,7 +194,7 @@ export function FloatingHeader({ workspaceName, initial, email }: { workspaceNam
     </div>
 
     {/* Mobile Bottom Tab Bar */}
-    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-50 flex items-center justify-around px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] bg-white/80 backdrop-blur-[20px] backdrop-saturate-[1.4] border-t border-black/5 shadow-soft">
+    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-50 flex items-center justify-around px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] liquid-glass border-t border-black/5 shadow-soft">
       {navigation.map((item) => {
         const active = isActive(item.href);
         return (

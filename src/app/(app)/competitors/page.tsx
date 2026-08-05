@@ -108,7 +108,7 @@ export default function CompetitorsPage() {
             <div key={idx}>
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 gap-1.5 sm:gap-0">
                 <span className="text-sm font-sans font-medium text-foreground">{item.label}</span>
-                <div className="flex items-center justify-between sm:justify-start gap-4 text-xs font-sans">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-xs font-sans mt-1 sm:mt-0">
                   {/* Coral for user, sky blue for competitor */}
                   <span className="text-coral font-semibold">You: {item.yourScore}</span>
                   <span className="text-sky font-medium">{item.competitorName}: {item.topCompetitor}</span>
@@ -124,7 +124,7 @@ export default function CompetitorsPage() {
       {/* COMPETITOR MATRIX TABLE — table rhythm, deliberately different from card grid */}
       <MotionWrapper delay={0.3}>
         <Card className="p-0 overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300">
-        <CardHeader className="p-4 md:p-6 border-b border-border bg-background">
+        <CardHeader className="p-4 md:p-6 border-b border-border bg-background mb-4">
           <CardTitle className="text-xl font-semibold">Full Market Comparison Matrix</CardTitle>
           <CardDescription className="text-sm">
             Head-to-head metrics comparing your brand with all tracked competitors.

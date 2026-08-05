@@ -13,8 +13,8 @@ export function Card({ className = '', delay = 0, interactive = false, style, ..
 
   return (
     <div 
-      className={`rounded-2xl border border-black/5 bg-card text-card-foreground shadow-float transition-all duration-[240ms] ease-out ${
-        interactive ? 'hover:-translate-y-[2px] hover:shadow-float-hover hover:bg-white' : ''
+      className={`liquid-glass rounded-2xl border border-black/5 text-card-foreground shadow-float transition-all duration-[240ms] ease-out ${
+        interactive ? 'hover:-translate-y-[2px] hover:shadow-float-hover hover:bg-white/50' : ''
       } ${className}`} 
       style={mountStyle}
       {...props} 

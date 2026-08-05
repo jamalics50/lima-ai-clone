@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { setFeedbackEnabled, isFeedbackEnabled } from '@/lib/feedback';
-import { SPRING_CONFIGS } from '@/lib/feedback';
 
 /**
  * Toggle that reads/writes the 'feedback-enabled' localStorage key.
@@ -37,15 +35,16 @@ export function InterfaceFeedbackToggle() {
         role="switch"
         aria-checked={enabled}
         onClick={handleToggle}
-        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/10 ${
-          enabled ? 'bg-coral' : 'bg-black/15'
+        className={`relative inline-flex h-[31px] w-[51px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-[250ms] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/50 ${
+          enabled ? 'bg-coral' : 'bg-[#E9E9EA] dark:bg-[#39393D]'
         }`}
       >
-        <motion.span
-          layout
-          transition={SPRING_CONFIGS.press}
-          className="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md"
-          style={{ translateX: enabled ? 20 : 0 }}
+        <span
+          className="pointer-events-none inline-block h-[27px] w-[27px] rounded-full bg-white shadow-[0_2px_4px_rgba(0,0,0,0.2)]"
+          style={{ 
+            transform: enabled ? 'translateX(20px)' : 'translateX(0px)',
+            transition: 'transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1)'
+          }}
         />
       </button>
     </div>

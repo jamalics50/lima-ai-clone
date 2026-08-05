@@ -121,12 +121,12 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           </div>
 
           {/* Platform filter */}
-          <div className="flex flex-col gap-1 md:gap-0 md:block">
+          <div className="flex flex-col gap-2 md:gap-0 md:block">
             <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1">Platform</label>
             <select
               value={platform}
               onChange={e => pushFilter('platform', e.target.value)}
-              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
+              className="liquid-glass border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
             >
               <option value="all">All Platforms</option>
               {platforms.map(p => <option key={p} value={p}>{p}</option>)}
@@ -134,12 +134,12 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           </div>
 
           {/* Sentiment filter */}
-          <div className="flex flex-col gap-1 md:gap-0 md:block">
-            <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1 mt-1">Sentiment</label>
+          <div className="flex flex-col gap-2 md:gap-0 md:block">
+            <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1 mt-1 md:mt-0">Sentiment</label>
             <select
               value={sentiment}
               onChange={e => pushFilter('sentiment', e.target.value)}
-              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
+              className="liquid-glass border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
             >
               <option value="all">All Sentiments</option>
               <option value="positive">Positive</option>
@@ -149,12 +149,12 @@ export function MentionsTable({ rows, total, page, pageSize, platform, sentiment
           </div>
 
           {/* Type filter */}
-          <div className="flex flex-col gap-1 md:gap-0 md:block">
-            <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1 mt-1">Mention Type</label>
+          <div className="flex flex-col gap-2 md:gap-0 md:block">
+            <label className="text-xs font-sans font-medium text-muted-foreground md:hidden uppercase tracking-wider ml-1 mt-1 md:mt-0">Mention Type</label>
             <select
               value={type}
               onChange={e => pushFilter('type', e.target.value)}
-              className="bg-card border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
+              className="liquid-glass border border-border rounded-lg px-4 py-2.5 md:py-2 text-base lg:text-sm font-sans text-foreground focus:outline-none focus:border-sky/50 focus:ring-1 focus:ring-sky/50 cursor-pointer shadow-sm w-full md:w-auto"
             >
               <option value="all">All Types</option>
               <option value="brand">Brand Only</option>

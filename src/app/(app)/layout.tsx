@@ -51,7 +51,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <FloatingHeader workspaceName={workspaceName} initial={initial} email={email} />
 
         {/* Main scrollable area */}
-        <main className="flex-1 overflow-y-auto px-4 sm:px-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-[calc(3rem+env(safe-area-inset-bottom))] pt-28">
+        <main id="main-scroll" className="ios-scroll flex-1 overflow-y-auto px-4 sm:px-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-[calc(3rem+env(safe-area-inset-bottom))] pt-28">
           <div className="max-w-[1200px] mx-auto space-y-6">
             {children}
           </div>
