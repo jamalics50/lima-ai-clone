@@ -46,15 +46,15 @@ export function PercentileBar({ score, average = 50, className = '' }: Percentil
           className="absolute h-3.5 w-3.5 rounded-full bg-coral border-2 border-white dark:border-zinc-900 shadow-md -top-[3px] transition-all duration-[600ms] ease-out z-20"
           style={{ left: mounted ? `calc(${clampedScore}% - 7px)` : '-7px' }}
         >
-          {/* Liquid Glass "You" Tooltip Badge above the dot */}
+          {/* Soft Translucent Glass "You" Tooltip Badge with Coral Accent Border & Text */}
           <div className="absolute bottom-full mb-1 left-1/2 flex flex-col items-center pointer-events-none z-30">
             <div 
-              className="px-2 py-0.5 rounded-full text-[10px] font-sans font-bold text-coral shadow-md border border-white/50 dark:border-white/20 whitespace-nowrap bg-white/75 dark:bg-[#1e1e1e]/60 backdrop-blur-md backdrop-saturate-140"
+              className="px-2.5 py-0.5 rounded-full text-[10px] font-sans font-bold text-coral shadow-sm border border-coral/40 whitespace-nowrap bg-white/90 dark:bg-white/95 backdrop-blur-md backdrop-saturate-140"
               style={{ transform: `translateX(-${clampedScore}%)` }}
             >
               You
             </div>
-            <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-white/75 dark:border-t-[#1e1e1e]/60 -mt-[1px]" />
+            <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[4px] border-t-white/90 dark:border-t-white/95 -mt-[1px]" />
           </div>
         </div>
       </div>
